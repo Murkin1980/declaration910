@@ -1983,11 +1983,6 @@ function loadProfile() {
   }
 }
 
-function lookupByBin() {
-  // Demo: would call eGov API
-  showToast('Данные обновлены из eGov.kz');
-}
-
 function showAddEcpModal() {
   document.getElementById('ecp-file').click();
 }
@@ -2051,6 +2046,19 @@ function shareDeclaration() {
   }
 }
 
+// ==================== INTEGRATIONS CONFIG ====================
+const apiConfig = JSON.parse(localStorage.getItem('apiConfig')) || {
+  smartbridge: { enabled: false, clientId: '', clientSecret: '' },
+  kaspi: { enabled: false, clientId: '', clientSecret: '' }
+};
+
+const notificationSettings = JSON.parse(localStorage.getItem('notificationSettings')) || {
+  enabled: false,
+  notify7days: true,
+  notify1day: true,
+  notifyDay: true
+};
+
 // ==================== INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', () => {
   updateTranslations();
@@ -2113,20 +2121,6 @@ document.getElementById('ecp-file')?.addEventListener('change', function() {
 });
 
 // ==================== INTEGRATIONS ====================
-
-// API Configuration
-const apiConfig = JSON.parse(localStorage.getItem('apiConfig')) || {
-  smartbridge: { enabled: false, clientId: '', clientSecret: '' },
-  kaspi: { enabled: false, clientId: '', clientSecret: '' }
-};
-
-// Notification settings
-const notificationSettings = JSON.parse(localStorage.getItem('notificationSettings')) || {
-  enabled: false,
-  notify7days: true,
-  notify1day: true,
-  notifyDay: true
-};
 
 // Check deadlines on app load
 function checkDeadlines() {
@@ -2451,35 +2445,14 @@ async function connectKaspi() {
   showToast('Kaspi API подключён');
 }
 
-function selectBankPreset(bank) {
-  // Demo presets remain the same
-  const presets = {
-    kaspi: { total: 15000000, cash: 4500000, noncash: 10500000 },
-    halyk: { total: 12000000, cash: 2000000, noncash: 10000000 },
-    jusan: { total: 8000000, cash: 1000000, noncash: 7000000 }
-  };
-  
-  const data = presets[bank];
-  state.statementData = {
-    filename: `${bank}_statement.csv`,
-    ...data,
-    bank: bank.charAt(0).toUpperCase() + bank.slice(1)
-  };
-  
-  showStatementPreview();
-}
-
-// Initialize on load
-document.addEventListener('DOMContentLoaded', () => {
-  // Load API config
+// Initialize API config on load
+(function initApiConfig() {
   const savedConfig = localStorage.getItem('apiConfig');
   if (savedConfig) {
     Object.assign(apiConfig, JSON.parse(savedConfig));
   }
-  
-  // Check deadlines
   checkDeadlines();
-});
+})();
 </script>
 </body>
 </html>
