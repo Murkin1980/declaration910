@@ -1674,32 +1674,42 @@ function showValidation() {
   openModal('validation');
 }
 
-function submitDeclaration() {
+async function submitDeclaration() {
   closeModal('validation');
   
-  // Create final declaration
   const declaration = {
     id: `910-${new Date().getFullYear()}-${String(state.declarations.filter(d => d.status === 'submitted').length + 1).padStart(6, '0')}`,
     ...state.currentDeclaration,
-    status: 'submitted',
-    createdAt: new Date().toISOString(),
-    submittedAt: new Date().toISOString()
+    status: 'pending',
+    createdAt: new Date().toISOString()
   };
   
-  state.declarations.push(declaration);
-  localStorage.setItem('declarations', JSON.stringify(state.declarations));
-  
-  // Add to signing history
-  state.signingHistory.unshift({
-    id: declaration.id,
-    documentType: 'ФНО 910.00',
-    signedAt: new Date().toISOString(),
-    status: 'signed'
-  });
-  localStorage.setItem('signingHistory', JSON.stringify(state.signingHistory));
-  
-  document.getElementById('declaration-id').textContent = declaration.id;
-  openModal('success');
+  try {
+    const result = await submitToKGD(declaration);
+    
+    if (result.success) {
+      declaration.id = result.declarationId || declaration.id;
+      declaration.status = 'submitted';
+      declaration.submittedAt = result.timestamp || new Date().toISOString();
+      
+      state.declarations.push(declaration);
+      localStorage.setItem('declarations', JSON.stringify(state.declarations));
+      
+      state.signingHistory.unshift({
+        id: declaration.id,
+        documentType: 'ФНО 910.00',
+        signedAt: declaration.submittedAt,
+        status: 'signed'
+      });
+      localStorage.setItem('signingHistory', JSON.stringify(state.signingHistory));
+      
+      document.getElementById('declaration-id').textContent = declaration.id;
+      openModal('success');
+    }
+  } catch (error) {
+    console.error('Submission error:', error);
+    showToast('Ошибка отправки. Попробуйте позже.');
+  }
 }
 
 // ==================== BANK STATEMENT ====================
