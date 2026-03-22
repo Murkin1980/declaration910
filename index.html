@@ -625,9 +625,9 @@ input:focus, select:focus, textarea:focus { outline: none; }
           <span class="material-symbols-outlined">picture_as_pdf</span>
           <span data-i18n="btn_pdf">PDF</span>
         </button>
-        <button onclick="shareDeclaration()" class="btn-secondary flex-1 py-4 flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined">share</span>
-          <span data-i18n="btn_share">Поделиться</span>
+        <button onclick="exportForKnz()" class="btn-secondary flex-1 py-4 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">upload_file</span>
+          <span>Для КНП</span>
         </button>
       </div>
     </div>
@@ -2054,6 +2054,82 @@ function shareDeclaration() {
   } else {
     showToast('Скопируйте ссылку для распространения');
   }
+}
+
+function exportForKnz() {
+  const decl = state.currentDeclaration;
+  const calc = decl.calculations;
+  const user = state.user;
+  
+  const knzData = {
+    version: '910.00',
+    period: `${decl.period.year}-${decl.period.half}`,
+    taxpayer: {
+      bin: user.bin || '',
+      name: user.name || '',
+      address: user.address || ''
+    },
+    income: {
+      total: decl.income.total || 0,
+      cash: decl.income.cash || 0,
+      nonCash: decl.income.nonCash || 0
+    },
+    employees: decl.employees || 0,
+    calculations: {
+      ipn: calc?.ipn || 0,
+      socialTax: calc?.socialTax || 0,
+      total: calc?.total || 0
+    },
+    kbk: calc?.byKbk || []
+  };
+  
+  const json = JSON.stringify(knzData, null, 2);
+  const filename = `910_${decl.period.year}_${decl.period.half}p_${user.bin || 'export'}.json`;
+  downloadFile(filename, json, 'application/json');
+  
+  const manualEntry = `
+========================================
+ДЕКЛАРАЦИЯ 910.00 — ДЛЯ ЗАПОЛНЕНИЯ В КНП
+========================================
+
+НАЛОГОПЛАТЕЛЬЩИК:
+  БИН: ${user.bin || '_______________'}
+  Наименование: ${user.name || '_______________'}
+  Адрес: ${user.address || '_______________'}
+
+ПЕРИОД: ${decl.period.year} год, ${decl.period.half === 1 ? '1' : '2'} полугодие
+
+ДОХОДЫ:
+  Общий доход: ${formatMoney(decl.income.total || 0)}
+  Наличный: ${formatMoney(decl.income.cash || 0)}
+  Безналичный: ${formatMoney(decl.income.nonCash || 0)}
+
+РАБОТНИКИ: ${decl.employees || 0} человек
+
+РАСЧЁТ НАЛОГОВ:
+  ИПН: ${formatMoney(calc?.ipn || 0)} (КБК 101202)
+  Социальный налог: ${formatMoney(calc?.socialTax || 0)} (КБК 103101)
+  ИТОГО К ОПЛАТЕ: ${formatMoney(calc?.total || 0)}
+
+ПОРЯДОК ЗАПОЛНЕНИЯ В КНП:
+1. Зайдите на https://knp.kgd.gov.kz
+2. Войдите по ИИН + SMS
+3. Меню: Налоговая отчётность → ФНО 910.00
+4. Заполните:
+   - Строка 910.00.001 = ${formatMoney(decl.income.total || 0)}
+   - Строка 910.00.002 = ${decl.employees > 0 ? 'сумма расходов на работников' : '0'}
+   - Работники = ${decl.employees || 0}
+5. Система рассчитает налоги автоматически
+6. Оплатите по указанным КБК до 25 числа
+
+========================================
+Срок подачи: до ${decl.period.half === 1 ? '15 августа' : '15 февраля'}
+Срок оплаты: до ${decl.period.half === 1 ? '25 августа' : '25 февраля'}
+========================================
+  `.trim();
+  
+  downloadFile(`910_${decl.period.year}_${decl.period.half}p_manual.txt`, manualEntry, 'text/plain');
+  showToast('Экспорт для КНП готов');
 }
 
 // ==================== INTEGRATIONS CONFIG ====================
