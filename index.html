@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<meta name="theme-color" content="#000666"/>
+<title>Декларация 910 — Мой Налоговый Консультант</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --surface: #f8f9fa;
+  --surface-container-low: #f3f4f5;
+  --surface-container-lowest: #ffffff;
+  --surface-container-high: #e7e8e9;
+  --surface-container-highest: #e1e3e4;
+  --primary: #000666;
+  --primary-container: #1a237e;
+  --on-primary: #ffffff;
+  --on-surface: #191c1d;
+  --on-surface-variant: #454652;
+  --tertiary: #005312;
+  --tertiary-fixed: #a3f69c;
+  --on-tertiary-fixed: #002204;
+  --on-tertiary-fixed-variant: #005312;
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+  --outline-variant: #c6c5d4;
+  --secondary-container: #d2d4ff;
+  --on-secondary-container: #575b7f;
+  --surface-tint: #4c56af;
+  --primary-fixed: #e0e0ff;
+  --on-primary-fixed: #000767;
+  --on-primary-fixed-variant: #343d96;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { 
+  font-family: 'Inter', sans-serif; 
+  background: var(--surface); 
+  color: var(--on-surface);
+  min-height: 100dvh;
+  overscroll-behavior: none;
+}
+.font-display { font-family: 'Manrope', sans-serif; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+input, select, textarea { font-family: inherit; }
+input:focus, select:focus, textarea:focus { outline: none; }
+
+/* Glassmorphism header */
+.glass-header { background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--outline-variant); border-radius: 4px; }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(100%); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes checkmark { 0% { stroke-dashoffset: 100; } 100% { stroke-dashoffset: 0; } }
+
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+.animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }
+
+/* Card styles */
+.card { background: var(--surface-container-lowest); border-radius: 12px; box-shadow: 0 -8px 32px rgba(0,6,102,0.04); }
+.card-elevated { background: var(--surface-container-lowest); border-radius: 12px; box-shadow: 0 8px 32px rgba(0,6,102,0.08); }
+
+/* Button styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  color: var(--on-primary);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-secondary {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  border-radius: 8px;
+  font-weight: 600;
+}
+.btn-secondary:active { transform: scale(0.98); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  border-radius: 8px;
+  font-weight: 500;
+}
+.btn-ghost:active { background: var(--surface-container-low); }
+
+/* Input styles */
+.input-field {
+  background: var(--surface-container-low);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 14px 16px;
+  width: 100%;
+  transition: all 0.2s;
+}
+.input-field:focus {
+  background: var(--primary-fixed);
+  border-color: rgba(0,6,102,0.2);
+}
+.input-field::placeholder { color: var(--on-surface-variant); }
+
+/* Progress steps */
+.progress-step {
+  height: 8px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+.progress-step.completed { background: var(--tertiary-fixed); }
+.progress-step.upcoming { background: var(--surface-container-highest); }
+
+/* Zebra rows */
+.zebra-row:nth-child(even) { background: var(--surface-container-low); }
+
+/* Status badges */
+.badge-success { background: var(--tertiary-fixed); color: var(--on-tertiary-fixed-variant); }
+.badge-warning { background: #fff3cd; color: #856404; }
+.badge-error { background: var(--error-container); color: var(--error); }
+
+/* Screen transitions */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn 0.3s ease-out; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  display: none; align-items: flex-end; justify-content: center;
+  z-index: 100;
+}
+.modal-overlay.active { display: flex; }
+.modal-content {
+  background: var(--surface-container-lowest);
+  border-radius: 24px 24px 0 0;
+  width: 100%; max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Donut chart */
+.donut-chart { transform: rotate(-90deg); }
+
+/* File drop zone */
+.drop-zone {
+  border: 2px dashed var(--outline-variant);
+  border-radius: 16px;
+  padding: 40px 20px;
+  text-align: center;
+  transition: all 0.2s;
+}
+.drop-zone.dragover {
+  border-color: var(--primary);
+  background: var(--primary-fixed);
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+  background: var(--on-surface); color: var(--surface-container-lowest);
+  padding: 12px 24px; border-radius: 8px;
+  font-weight: 500; z-index: 200;
+  animation: slideUp 0.3s ease-out;
+}
+</style>
+</head>
+<body class="pb-24">
+
+<!-- ==================== SCREEN 1: LANGUAGE SELECTION ==================== -->
+<div id="screen-language" class="screen active">
+  <div class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="mb-12 text-center">
+      <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary-container rounded-2xl mx-auto mb-6 flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-4xl">receipt_long</span>
+      </div>
+      <h1 class="font-display text-3xl font-bold text-primary mb-2">Декларация 910</h1>
+      <p class="text-on-surface-variant text-sm">Мой Налоговый Консультант</p>
+    </div>
+    
+    <div class="w-full max-w-sm space-y-4">
+      <p class="text-center text-on-surface-variant text-sm mb-6">Выберите язык интерфейса / Интерфейс тілін таңдаңыз</p>
+      
+      <button onclick="selectLanguage('ru')" class="card w-full p-5 flex items-center gap-4 hover:scale-[1.02] transition-transform active:scale-[0.98]">
+        <span class="text-4xl">🇷🇺</span>
+        <div class="text-left">
+          <div class="font-display font-bold text-lg text-on-surface">Русский</div>
+          <div class="text-sm text-on-surface-variant">РФ тілі</div>
+        </div>
+        <span class="material-symbols-outlined text-primary ml-auto">chevron_right</span>
+      </button>
+      
+      <button onclick="selectLanguage('kk')" class="card w-full p-5 flex items-center gap-4 hover:scale-[1.02] transition-transform active:scale-[0.98]">
+        <span class="text-4xl">🇰🇿</span>
+        <div class="text-left">
+          <div class="font-display font-bold text-lg text-on-surface">Қазақша</div>
+          <div class="text-sm text-on-surface-variant">Казахский язык</div>
+        </div>
+        <span class="material-symbols-outlined text-primary ml-auto">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 2: AUTH ==================== -->
+<div id="screen-auth" class="screen">
+  <div class="min-h-screen p-6 pt-12">
+    <button onclick="navigateTo('language')" class="mb-6 p-2 -ml-2 rounded-full hover:bg-surface-container-low transition-colors">
+      <span class="material-symbols-outlined text-primary">arrow_back</span>
+    </button>
+    
+    <h1 class="font-display text-2xl font-bold text-primary mb-2" data-i18n="auth_title">Вход в приложение</h1>
+    <p class="text-on-surface-variant mb-8" data-i18n="auth_subtitle">Выберите способ авторизации</p>
+    
+    <!-- Auth tabs -->
+    <div class="flex bg-surface-container-low rounded-xl p-1 mb-8">
+      <button onclick="switchAuthTab('sms')" id="tab-sms" class="flex-1 py-3 rounded-lg font-semibold text-sm transition-all bg-white shadow-sm">
+        <span class="material-symbols-outlined text-sm mr-1">sms</span>
+        <span data-i18n="tab_sms">SMS</span>
+      </button>
+      <button onclick="switchAuthTab('ecp')" id="tab-ecp" class="flex-1 py-3 rounded-lg font-semibold text-sm transition-all text-on-surface-variant">
+        <span class="material-symbols-outlined text-sm mr-1">badge</span>
+        <span data-i18n="tab_ecp">ЭЦП</span>
+      </button>
+    </div>
+    
+    <!-- SMS Auth Form -->
+    <div id="auth-sms" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-on-surface-variant mb-2" data-i18n="phone_label">Номер телефона</label>
+        <input type="tel" id="phone-input" class="input-field" placeholder="+7 (700) 123-45-67" value="+7"/>
+      </div>
+      
+      <div id="sms-code-section" class="hidden">
+        <label class="block text-sm font-medium text-on-surface-variant mb-2" data-i18n="code_label">Код из SMS</label>
+        <div class="flex gap-2">
+          <input type="text" id="sms-code" class="input-field text-center text-2xl tracking-widest" maxlength="6" placeholder="• • • • • •"/>
+        </div>
+        <p class="text-xs text-on-surface-variant mt-2" data-i18n="code_resend">Повторный код через <span id="timer">60</span> сек</p>
+      </div>
+      
+      <button onclick="sendSms()" id="btn-send-sms" class="btn-primary w-full py-4 mt-4">
+        <span data-i18n="btn_send_code">Отправить код</span>
+      </button>
+    </div>
+    
+    <!-- ECP Auth Form -->
+    <div id="auth-ecp" class="hidden space-y-4">
+      <div class="card p-6">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary">key</span>
+          </div>
+          <div>
+            <div class="font-semibold" data-i18n="ecp_title">Электронная цифровая подпись</div>
+            <div class="text-sm text-on-surface-variant" data-i18n="ecp_subtitle">Для юридических лиц и ИП</div>
+          </div>
+        </div>
+        
+        <label class="drop-zone cursor-pointer" id="ecp-drop-zone">
+          <input type="file" id="ecp-file" accept=".p12,.key,storage.p12" class="hidden" onchange="handleEcpFile(this)"/>
+          <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2">upload_file</span>
+          <p class="font-medium" data-i18n="ecp_upload">Загрузите файл ключа</p>
+          <p class="text-xs text-on-surface-variant mt-1">.p12, .key, storage.p12</p>
+        </label>
+        
+        <div id="ecp-password-section" class="hidden mt-4">
+          <label class="block text-sm font-medium text-on-surface-variant mb-2" data-i18n="password_label">Пароль к ключу</label>
+          <input type="password" id="ecp-password" class="input-field" placeholder="••••••••"/>
+        </div>
+      </div>
+      
+      <!-- Digital ID (Biometric) -->
+      <div class="card p-6">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-12 h-12 bg-tertiary-fixed/30 rounded-xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-on-tertiary-fixed-variant">qr_code</span>
+          </div>
+          <div>
+            <div class="font-semibold" data-i18n="digital_id_title">Digital ID</div>
+            <div class="text-sm text-on-surface-variant" data-i18n="digital_id_subtitle">Авторизация через eGov Mobile</div>
+          </div>
+        </div>
+        <button onclick="showDigitalIdModal()" class="btn-secondary w-full py-4">
+          <span class="material-symbols-outlined mr-2">qr_code_scanner</span>
+          <span data-i18n="btn_scan_qr">Сканировать QR-код</span>
+        </button>
+      </div>
+      
+      <button onclick="loginWithEcp()" id="btn-ecp-login" class="btn-primary w-full py-4 mt-4" disabled>
+        <span data-i18n="btn_login_ecp">Войти с ЭЦП</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 3: DASHBOARD ==================== -->
+<div id="screen-dashboard" class="screen">
+  <!-- Header -->
+  <header class="glass-header fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between">
+    <div>
+      <h1 class="font-display font-bold text-lg text-primary" data-i18n="app_title">Декларация 910</h1>
+      <p class="text-xs text-on-surface-variant">Мой Налоговый Консультант</p>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="navigateTo('profile')" class="p-2 rounded-full hover:bg-surface-container-low transition-colors">
+        <span class="material-symbols-outlined text-primary">account_circle</span>
+      </button>
+    </div>
+  </header>
+  
+  <main class="pt-20 px-6 pb-6 space-y-6">
+    <!-- Welcome Card -->
+    <div class="card p-6 relative overflow-hidden">
+      <div class="absolute -right-4 -top-8 font-display font-black text-8xl text-primary/5 select-none">ИП</div>
+      <div class="relative">
+        <h2 class="font-display text-xl font-bold text-primary mb-1" id="user-name">ИП Бизнес Ко</h2>
+        <p class="text-sm text-on-surface-variant flex items-center gap-2">
+          БИН <span class="font-semibold">940312300456</span>
+          <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+          г. Астана
+        </p>
+      </div>
+    </div>
+    
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-2 gap-4">
+      <div class="card p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-tertiary text-sm">check_circle</span>
+          <span class="text-xs text-on-surface-variant uppercase tracking-wider" data-i18n="stat_submitted">Подано</span>
+        </div>
+        <div class="font-display text-2xl font-bold text-primary" id="stat-submitted">3</div>
+        <div class="text-xs text-on-surface-variant" data-i18n="stat_declarations">деклараций</div>
+      </div>
+      <div class="card p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-tertiary text-sm">calendar_today</span>
+          <span class="text-xs text-on-surface-variant uppercase tracking-wider" data-i18n="stat_next">Следующий</span>
+        </div>
+        <div class="font-display text-2xl font-bold text-primary">15.08</div>
+        <div class="text-xs text-on-surface-variant" data-i18n="stat_deadline">Крайний срок</div>
+      </div>
+    </div>
+    
+    <!-- Main Actions -->
+    <div class="space-y-3">
+      <button onclick="navigateTo('new-declaration')" class="btn-primary w-full py-5 flex items-center justify-center gap-3 shadow-lg">
+        <span class="material-symbols-outlined">add_circle</span>
+        <span class="font-semibold" data-i18n="btn_new_declaration">Новая декларация</span>
+      </button>
+      <button onclick="navigateTo('declarations')" class="btn-secondary w-full py-4 flex items-center justify-center gap-3">
+        <span class="material-symbols-outlined">folder_open</span>
+        <span data-i18n="btn_my_declarations">Мои декларации</span>
+      </button>
+    </div>
+    
+    <!-- Recent Declarations -->
+    <div class="space-y-3">
+      <h3 class="font-display font-bold text-primary" data-i18n="recent_title">Последние декларации</h3>
+      <div id="recent-list" class="space-y-2">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </main>
+  
+  <!-- Bottom Navigation -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-surface-container-high px-6 py-3 flex justify-around z-40">
+    <button onclick="navigateTo('declarations')" class="flex flex-col items-center gap-1 text-primary">
+      <span class="material-symbols-outlined">folder_open</span>
+      <span class="text-xs font-medium" data-i18n="nav_declarations">Декларации</span>
+    </button>
+    <button onclick="navigateTo('new-declaration')" class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center -mt-6 shadow-lg">
+        <span class="material-symbols-outlined text-white">add</span>
+      </div>
+      <span class="text-xs font-medium" data-i18n="nav_new">Создать</span>
+    </button>
+    <button onclick="navigateTo('profile')" class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">person</span>
+      <span class="text-xs font-medium" data-i18n="nav_profile">Профиль</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ==================== SCREEN 4: NEW DECLARATION ==================== -->
+<div id="screen-new-declaration" class="screen">
+  <header class="glass-header fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center gap-4">
+    <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 rounded-full hover:bg-surface-container-low">
+      <span class="material-symbols-outlined text-primary">arrow_back</span>
+    </button>
+    <h1 class="font-display font-bold text-lg text-primary" data-i18n="new_decl_title">Новая декларация</h1>
+  </header>
+  
+  <main class="pt-20 px-6 pb-6 space-y-6">
+    <!-- Regime Selection -->
+    <div class="space-y-3">
+      <h3 class="font-display font-bold text-primary" data-i18n="regime_title">Выберите режим</h3>
+      
+      <button onclick="selectRegime('simplified')" class="card w-full p-5 text-left hover:scale-[1.01] transition-transform" id="regime-simplified">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-tertiary-fixed/30 rounded-xl flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-tertiary">simplify</span>
+          </div>
+          <div class="flex-1">
+            <div class="font-display font-bold text-on-surface" data-i18n="regime_simplified_title">Упрощённая декларация (910)</div>
+            <div class="text-sm text-on-surface-variant mt-1" data-i18n="regime_simplified_desc">Ставка 3% от дохода. Для ИП без сотрудников или с ЗП ≥ 23 МРП</div>
+          </div>
+          <span class="material-symbols-outlined text-primary">chevron_right</span>
+        </div>
+      </button>
+      
+      <button onclick="selectRegime('our')" class="card w-full p-5 text-left hover:scale-[1.01] transition-transform" id="regime-our">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-primary-fixed rounded-xl flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary">account_balance</span>
+          </div>
+          <div class="flex-1">
+            <div class="font-display font-bold text-on-surface" data-i18n="regime_our_title">Общеустановленный режим (ОУР)</div>
+            <div class="text-sm text-on-surface-variant mt-1" data-i18n="regime_our_desc">ИПН 10%, СН, ОПВ, СО, ОСМС. Полный учёт</div>
+          </div>
+          <span class="material-symbols-outlined text-primary">chevron_right</span>
+        </div>
+      </button>
+    </div>
+  </main>
+</div>
+
+<!-- ==================== SCREEN 5: DECLARATION FORM ==================== -->
+<div id="screen-declaration-form" class="screen">
+  <header class="glass-header fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <button onclick="navigateTo('new-declaration')" class="p-2 -ml-2 rounded-full hover:bg-surface-container-low">
+        <span class="material-symbols-outlined text-primary">arrow_back</span>
+      </button>
+      <h1 class="font-display font-bold text-lg text-primary" id="form-title">Форма 910</h1>
+    </div>
+    <button onclick="showValidation()" class="p-2 rounded-full hover:bg-surface-container-low">
+      <span class="material-symbols-outlined text-primary">fact_check</span>
+    </button>
+  </header>
+  
+  <main class="pt-20 px-6 pb-6 space-y-6">
+    <!-- Period Selection -->
+    <div class="card p-5 space-y-4">
+      <h3 class="font-display font-bold text-primary" data-i18n="form_period">Налоговый период</h3>
+      <div class="grid grid-cols-2 gap-3">
+        <select id="period-year" class="input-field">
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+        </select>
+        <select id="period-half" class="input-field">
+          <option value="1" data-i18n="period_1half">1 полугодие</option>
+          <option value="2" data-i18n="period_2half">2 полугодие</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Bank Statement Upload -->
+    <div class="card p-5 space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display font-bold text-primary" data-i18n="bank_statement_title">Банковская выписка</h3>
+        <button onclick="showStatementModal()" class="text-sm text-primary font-medium flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">upload</span>
+          <span data-i18n="btn_upload">Загрузить</span>
+        </button>
+      </div>
+      
+      <div id="statement-preview" class="hidden">
+        <div class="bg-surface-container-low rounded-xl p-4">
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-semibold" id="statement-bank">Kaspi Pay</span>
+            <button onclick="editStatement()" class="text-primary text-sm flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">edit</span>
+              <span data-i18n="btn_edit">Изменить</span>
+            </button>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant" data-i18n="total_income">Всего доход:</span>
+              <span class="font-bold text-primary" id="statement-total">0 ₸</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant" data-i18n="cash_income">Наличные:</span>
+              <span id="statement-cash">0 ₸</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-on-surface-variant" data-i18n="noncash_income">Безналичные:</span>
+              <span id="statement-noncash">0 ₸</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="statement-placeholder" class="text-center py-4">
+        <span class="material-symbols-outlined text-4xl text-on-surface-variant/50 mb-2 block">account_balance</span>
+        <p class="text-sm text-on-surface-variant" data-i18n="statement_placeholder">Загрузите выписку для автозаполнения</p>
+      </div>
+    </div>
+    
+    <!-- Income Fields -->
+    <div class="card p-5 space-y-4">
+      <h3 class="font-display font-bold text-primary" data-i18n="income_section">Доходы</h3>
+      
+      <div>
+        <label class="block text-sm font-medium text-on-surface-variant mb-2" data-i18n="field_income_total">Доход (общий)</label>
+        <div class="relative">
+          <input type="number" id="income-total" class="input-field pr-12" placeholder="0" value="0" oninput="calculateTax()"/>
+          <span class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant">₸</span>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-on-surface-variant mb-2" data-i18n="field_income_cash">Наличные</label>
+          <div class="relative">
+            <input type="number" id="income-cash" class="input-field pr-12" placeholder="0" value="0" oninput="calculateTax()"/>
+            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant">₸</span>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-on-surface-variant mb-2" data-i18n="field_income_noncash">Безналичные</label>
+          <div class="relative">
+            <input type="number" id="income-noncash" class="input-field pr-12" placeholder="0" value="0" oninput="calculateTax()"/>
+            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant">₸</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Employees (if simplified with employees) -->
+    <div id="employees-section" class="card p-5 space-y-4 hidden">
+      <h3 class="font-display font-bold text-primary" data-i18n="employees_section">Сотрудники</h3>
+      
+      <div>
+        <label class="block text-sm font-medium text-on-surface-variant mb-2" data-i18n="field_employees">Количество сотрудников</label>
+        <input type="number" id="employees-count" class="input-field" placeholder="0" min="0" max="30" value="0" oninput="calculateTax()"/>
+      </div>
+      
+      <div id="salary-section" class="hidden">
+        <label class="block text-sm font-medium text-on-surface-variant mb-2" data-i18n="field_salary">Средняя з/п на 1 сотрудника</label>
+        <div class="relative">
+          <input type="number" id="avg-salary" class="input-field pr-12" placeholder="0" value="85000" oninput="calculateTax()"/>
+          <span class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant">₸</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tax Calculation Preview -->
+    <div class="card p-5 space-y-4">
+      <h3 class="font-display font-bold text-primary" data-i18n="tax_preview">Расчёт налогов</h3>
+      
+      <div class="space-y-3">
+        <div class="flex justify-between items-center py-2">
+          <span class="text-on-surface-variant">ИПН (1.5%)</span>
+          <span class="font-bold text-primary" id="tax-ipn">0 ₸</span>
+        </div>
+        <div class="flex justify-between items-center py-2">
+          <span class="text-on-surface-variant">Социальный налог (1.5%)</span>
+          <span class="font-bold text-primary" id="tax-social">0 ₸</span>
+        </div>
+        <div class="h-px bg-surface-container-highest my-2"></div>
+        <div class="flex justify-between items-center py-2">
+          <span class="font-semibold">ИТОГО</span>
+          <span class="font-display font-bold text-xl text-primary" id="tax-total">0 ₸</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="space-y-3 pt-4">
+      <button onclick="showKbkList()" class="btn-primary w-full py-4">
+        <span data-i18n="btn_view_kbk">Просмотр КБК</span>
+      </button>
+      <button onclick="saveDraft()" class="btn-secondary w-full py-4">
+        <span class="material-symbols-outlined mr-2">save</span>
+        <span data-i18n="btn_save_draft">Сохранить черновик</span>
+      </button>
+    </div>
+  </main>
+</div>
+
+<!-- ==================== SCREEN 6: KBK LIST ==================== -->
+<div id="screen-kbk" class="screen">
+  <header class="glass-header fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center gap-4">
+    <button onclick="navigateTo('declaration-form')" class="p-2 -ml-2 rounded-full hover:bg-surface-container-low">
+      <span class="material-symbols-outlined text-primary">arrow_back</span>
+    </button>
+    <h1 class="font-display font-bold text-lg text-primary" data-i18n="kbk_title">КБК для оплаты</h1>
+  </header>
+  
+  <main class="pt-20 px-6 pb-6 space-y-6">
+    <!-- Total Summary -->
+    <div class="card p-6 bg-gradient-to-br from-primary to-primary-container text-white relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-primary to-primary-container opacity-90"></div>
+      <div class="relative">
+        <p class="text-white/70 text-sm uppercase tracking-wider mb-2" data-i18n="total_to_pay">Всего к оплате</p>
+        <p class="font-display text-4xl font-bold" id="kbk-grand-total">0 ₸</p>
+        <p class="text-white/70 text-sm mt-2" id="kbk-period">За 1 полугодие 2025</p>
+      </div>
+    </div>
+    
+    <!-- KBK List -->
+    <div id="kbk-list" class="space-y-3">
+      <!-- Filled by JS -->
+    </div>
+    
+    <!-- Actions -->
+    <div class="space-y-3 pt-4">
+      <button onclick="submitDeclaration()" class="btn-primary w-full py-4 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">send</span>
+        <span data-i18n="btn_submit">Подписать и отправить</span>
+      </button>
+      <div class="flex gap-3">
+        <button onclick="exportToPdf()" class="btn-secondary flex-1 py-4 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">picture_as_pdf</span>
+          <span data-i18n="btn_pdf">PDF</span>
+        </button>
+        <button onclick="shareDeclaration()" class="btn-secondary flex-1 py-4 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">share</span>
+          <span data-i18n="btn_share">Поделиться</span>
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ==================== SCREEN 7: DECLARATIONS LIST ==================== -->
+<div id="screen-declarations" class="screen">
+  <header class="glass-header fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between">
+    <h1 class="font-display font-bold text-lg text-primary" data-i18n="my_declarations">Мои декларации</h1>
+    <button onclick="navigateTo('dashboard')" class="p-2 rounded-full hover:bg-surface-container-low">
+      <span class="material-symbols-outlined text-primary">close</span>
+    </button>
+  </header>
+  
+  <main class="pt-20 px-6 pb-6 space-y-4">
+    <!-- Filters -->
+    <div class="flex gap-2 overflow-x-auto pb-2">
+      <button onclick="filterDeclarations('all')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-primary text-white" data-filter="all">
+        Все
+      </button>
+      <button onclick="filterDeclarations('submitted')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-surface-container-low text-on-surface-variant" data-filter="submitted">
+        Поданые
+      </button>
+      <button onclick="filterDeclarations('draft')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-surface-container-low text-on-surface-variant" data-filter="draft">
+        Черновики
+      </button>
+    </div>
+    
+    <!-- Declarations List -->
+    <div id="declarations-list" class="space-y-3">
+      <!-- Filled by JS -->
+    </div>
+  </main>
+  
+  <!-- Bottom Navigation -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-surface-container-high px-6 py-3 flex justify-around z-40">
+    <button onclick="navigateTo('declarations')" class="flex flex-col items-center gap-1 text-primary">
+      <span class="material-symbols-outlined">folder_open</span>
+      <span class="text-xs font-medium" data-i18n="nav_declarations">Декларации</span>
+    </button>
+    <button onclick="navigateTo('new-declaration')" class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center -mt-6 shadow-lg">
+        <span class="material-symbols-outlined text-white">add</span>
+      </div>
+      <span class="text-xs font-medium" data-i18n="nav_new">Создать</span>
+    </button>
+    <button onclick="navigateTo('profile')" class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">person</span>
+      <span class="text-xs font-medium" data-i18n="nav_profile">Профиль</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ==================== SCREEN 8: PROFILE ==================== -->
+<div id="screen-profile" class="screen">
+  <header class="glass-header fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center gap-4">
+    <button onclick="navigateTo('dashboard')" class="p-2 -ml-2 rounded-full hover:bg-surface-container-low">
+      <span class="material-symbols-outlined text-primary">arrow_back</span>
+    </button>
+    <h1 class="font-display font-bold text-lg text-primary" data-i18n="profile_title">Профиль</h1>
+  </header>
+  
+  <main class="pt-20 px-6 pb-6 space-y-6">
+    <!-- Organization Info -->
+    <div class="card p-5">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-white text-3xl">business</span>
+        </div>
+        <div class="flex-1">
+          <h2 class="font-display font-bold text-lg" id="profile-name">ИП Бизнес Ко</h2>
+          <p class="text-sm text-on-surface-variant">БИН: <span id="profile-bin">940312300456</span></p>
+        </div>
+        <button onclick="lookupByBin()" class="p-2 rounded-full hover:bg-surface-container-low">
+          <span class="material-symbols-outlined text-primary">sync</span>
+        </button>
+      </div>
+      
+      <div class="space-y-3">
+        <div class="flex justify-between py-2">
+          <span class="text-on-surface-variant">Адрес</span>
+          <span class="text-right" id="profile-address">г. Астана</span>
+        </div>
+        <div class="flex justify-between py-2">
+          <span class="text-on-surface-variant">ОКЭД</span>
+          <span id="profile-oked">62011</span>
+        </div>
+        <div class="flex justify-between py-2">
+          <span class="text-on-surface-variant">Налоговая</span>
+          <span id="profile-tax">УГД по Есильскому р-ну</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ECP Management -->
+    <div class="card p-5 space-y-4">
+      <h3 class="font-display font-bold text-primary flex items-center gap-2">
+        <span class="material-symbols-outlined">badge</span>
+        <span data-i18n="ecp_management">Управление ЭЦП</span>
+      </h3>
+      
+      <div id="ecp-keys-list" class="space-y-2">
+        <!-- Filled by JS -->
+      </div>
+      
+      <button onclick="showAddEcpModal()" class="btn-secondary w-full py-3 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">add</span>
+        <span data-i18n="btn_add_ecp">Добавить ключ</span>
+      </button>
+    </div>
+    
+    <!-- Signing History -->
+    <div class="card p-5 space-y-4">
+      <h3 class="font-display font-bold text-primary flex items-center gap-2">
+        <span class="material-symbols-outlined">history</span>
+        <span data-i18n="signing_history">История подписаний</span>
+      </h3>
+      
+      <div id="signing-history" class="space-y-2">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+    
+    <!-- Settings -->
+    <div class="card p-5 space-y-4">
+      <h3 class="font-display font-bold text-primary" data-i18n="settings_title">Настройки</h3>
+      
+      <div class="space-y-3">
+        <button onclick="toggleLanguage()" class="w-full flex items-center justify-between py-3">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary">language</span>
+            <span data-i18n="setting_language">Язык</span>
+          </span>
+          <span class="text-on-surface-variant" id="current-lang">Русский</span>
+        </button>
+        
+        <button class="w-full flex items-center justify-between py-3">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary">notifications</span>
+            <span data-i18n="setting_notifications">Уведомления</span>
+          </span>
+          <span class="material-symbols-outlined text-primary">chevron_right</span>
+        </button>
+        
+        <button onclick="clearData()" class="w-full flex items-center justify-between py-3 text-error">
+          <span class="flex items-center gap-3">
+            <span class="material-symbols-outlined">delete_forever</span>
+            <span data-i18n="setting_clear">Очистить данные</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- Statement Upload Modal -->
+<div id="modal-statement" class="modal-overlay">
+  <div class="modal-content p-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <h2 class="font-display font-bold text-lg text-primary" data-i18n="modal_statement_title">Загрузка выписки</h2>
+      <button onclick="closeModal('statement')" class="p-2 rounded-full hover:bg-surface-container-low">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    
+    <!-- Drop Zone -->
+    <label class="drop-zone block cursor-pointer" id="statement-drop">
+      <input type="file" id="statement-file" class="hidden" accept=".csv,.xlsx,.xls,.pdf" onchange="handleStatementFile(this)"/>
+      <span class="material-symbols-outlined text-5xl text-primary mb-3 block">upload_file</span>
+      <p class="font-semibold" data-i18n="dropzone_title">Перетащите файл сюда</p>
+      <p class="text-sm text-on-surface-variant mt-1" data-i18n="dropzone_formats">или нажмите для выбора • CSV, Excel, PDF</p>
+    </label>
+    
+    <!-- Quick Bank Buttons -->
+    <div class="space-y-2">
+      <p class="text-sm text-on-surface-variant text-center" data-i18n="or_select_bank">или выберите банк</p>
+      <div class="grid grid-cols-3 gap-2">
+        <button onclick="selectBankPreset('kaspi')" class="card p-3 text-center hover:scale-[1.02] transition-transform">
+          <div class="text-2xl mb-1">💳</div>
+          <div class="text-xs font-medium">Kaspi</div>
+        </button>
+        <button onclick="selectBankPreset('halyk')" class="card p-3 text-center hover:scale-[1.02] transition-transform">
+          <div class="text-2xl mb-1">🏦</div>
+          <div class="text-xs font-medium">Halyk</div>
+        </button>
+        <button onclick="selectBankPreset('jusan')" class="card p-3 text-center hover:scale-[1.02] transition-transform">
+          <div class="text-2xl mb-1">💰</div>
+          <div class="text-xs font-medium">Jusan</div>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Manual Entry Option -->
+    <div class="text-center">
+      <button onclick="showManualEntry()" class="text-sm text-primary font-medium" data-i18n="btn_manual_entry">
+        Ввести данные вручную
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Statement Preview Modal -->
+<div id="modal-statement-preview" class="modal-overlay">
+  <div class="modal-content p-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <h2 class="font-display font-bold text-lg text-primary" data-i18n="modal_preview_title">Предпросмотр выписки</h2>
+      <button onclick="closeModal('statement-preview')" class="p-2 rounded-full hover:bg-surface-container-low">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    
+    <div id="preview-content" class="space-y-4">
+      <!-- Filled by JS -->
+    </div>
+    
+    <div class="flex gap-3">
+      <button onclick="confirmStatement()" class="btn-primary flex-1 py-4">
+        <span class="material-symbols-outlined mr-2">check</span>
+        <span data-i18n="btn_confirm">Подтвердить</span>
+      </button>
+      <button onclick="editStatementData()" class="btn-secondary flex-1 py-4">
+        <span class="material-symbols-outlined mr-2">edit</span>
+        <span data-i18n="btn_edit_data">Изменить</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Validation Modal -->
+<div id="modal-validation" class="modal-overlay">
+  <div class="modal-content p-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <h2 class="font-display font-bold text-lg text-primary" data-i18n="modal_validation_title">Проверка декларации</h2>
+      <button onclick="closeModal('validation')" class="p-2 rounded-full hover:bg-surface-container-low">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    
+    <div id="validation-results" class="space-y-3">
+      <!-- Filled by JS -->
+    </div>
+    
+    <div class="space-y-3">
+      <button onclick="submitDeclaration()" class="btn-primary w-full py-4" id="btn-confirm-submit">
+        <span class="material-symbols-outlined mr-2">send</span>
+        <span data-i18n="btn_confirm_submit">Подписать и отправить</span>
+      </button>
+      <button onclick="closeModal('validation')" class="btn-secondary w-full py-4">
+        <span data-i18n="btn_back">Вернуться</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div id="modal-success" class="modal-overlay">
+  <div class="modal-content p-8 text-center">
+    <div class="w-20 h-20 mx-auto mb-6 bg-tertiary-fixed rounded-full flex items-center justify-center">
+      <svg class="w-10 h-10 text-tertiary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+        <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2 class="font-display text-2xl font-bold text-primary mb-2" data-i18n="success_title">Декларация отправлена!</h2>
+    <p class="text-on-surface-variant mb-6" data-i18n="success_message">Ваша декларация успешно принята КГД</p>
+    <div class="bg-surface-container-low rounded-xl p-4 mb-6">
+      <p class="text-xs text-on-surface-variant mb-1">Номер декларации</p>
+      <p class="font-mono font-bold text-lg" id="declaration-id">910-2026-000001</p>
+    </div>
+    <button onclick="closeModal('success'); navigateTo('dashboard');" class="btn-primary w-full py-4">
+      <span data-i18n="btn_to_dashboard">На главную</span>
+    </button>
+  </div>
+</div>
+
+<!-- Digital ID Modal -->
+<div id="modal-digital-id" class="modal-overlay">
+  <div class="modal-content p-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <h2 class="font-display font-bold text-lg text-primary" data-i18n="digital_id_title">Digital ID</h2>
+      <button onclick="closeModal('digital-id')" class="p-2 rounded-full hover:bg-surface-container-low">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    
+    <div class="text-center py-8">
+      <div class="w-48 h-48 mx-auto bg-surface-container-low rounded-2xl flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-8xl text-primary/50">qr_code</span>
+      </div>
+      <p class="text-on-surface-variant" data-i18n="digital_id_instructions">
+        Отсканируйте QR-код в приложении eGov Mobile
+      </p>
+    </div>
+    
+    <button onclick="simulateDigitalIdLogin()" class="btn-primary w-full py-4">
+      <span class="material-symbols-outlined mr-2">phone_iphone</span>
+      <span data-i18n="btn_demo_login">Демо-вход (тест)</span>
+    </button>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<script>
+// ==================== STATE MANAGEMENT ====================
+const state = {
+  language: localStorage.getItem('language') || 'ru',
+  user: JSON.parse(localStorage.getItem('user')) || {
+    name: 'ИП Бизнес Ко',
+    bin: '940312300456',
+    address: 'г. Астана',
+    oked: '62011'
+  },
+  currentRegime: null,
+  declarations: JSON.parse(localStorage.getItem('declarations')) || [],
+  ecpKeys: JSON.parse(localStorage.getItem('ecpKeys')) || [],
+  signingHistory: JSON.parse(localStorage.getItem('signingHistory')) || [],
+  currentDeclaration: {
+    period: { year: 2025, half: 1 },
+    income: { total: 0, cash: 0, noncash: 0 },
+    employees: 0,
+    salary: 85000,
+    calculations: {}
+  },
+  statementData: null
+};
+
+// ==================== TRANSLATIONS ====================
+const translations = {
+  ru: {
+    auth_title: 'Вход в приложение',
+    auth_subtitle: 'Выберите способ авторизации',
+    tab_sms: 'SMS',
+    tab_ecp: 'ЭЦП',
+    phone_label: 'Номер телефона',
+    code_label: 'Код из SMS',
+    code_resend: 'Повторный код через',
+    btn_send_code: 'Отправить код',
+    ecp_title: 'Электронная цифровая подпись',
+    ecp_subtitle: 'Для юридических лиц и ИП',
+    ecp_upload: 'Загрузите файл ключа',
+    password_label: 'Пароль к ключу',
+    digital_id_title: 'Digital ID',
+    digital_id_subtitle: 'Авторизация через eGov Mobile',
+    btn_scan_qr: 'Сканировать QR-код',
+    btn_login_ecp: 'Войти с ЭЦП',
+    app_title: 'Декларация 910',
+    stat_submitted: 'Подано',
+    stat_declarations: 'деклараций',
+    stat_next: 'Следующий',
+    stat_deadline: 'Крайний срок',
+    btn_new_declaration: 'Новая декларация',
+    btn_my_declarations: 'Мои декларации',
+    recent_title: 'Последние декларации',
+    new_decl_title: 'Новая декларация',
+    regime_title: 'Выберите режим',
+    regime_simplified_title: 'Упрощённая декларация (910)',
+    regime_simplified_desc: 'Ставка 3% от дохода. Для ИП без сотрудников или с ЗП ≥ 23 МРП',
+    regime_our_title: 'Общеустановленный режим (ОУР)',
+    regime_our_desc: 'ИПН 10%, СН, ОПВ, СО, ОСМС. Полный учёт',
+    form_period: 'Налоговый период',
+    period_1half: '1 полугодие',
+    period_2half: '2 полугодие',
+    bank_statement_title: 'Банковская выписка',
+    btn_upload: 'Загрузить',
+    btn_edit: 'Изменить',
+    total_income: 'Всего доход:',
+    cash_income: 'Наличные:',
+    noncash_income: 'Безналичные:',
+    statement_placeholder: 'Загрузите выписку для автозаполнения',
+    income_section: 'Доходы',
+    field_income_total: 'Доход (общий)',
+    field_income_cash: 'Наличные',
+    field_income_noncash: 'Безналичные',
+    employees_section: 'Сотрудники',
+    field_employees: 'Количество сотрудников',
+    field_salary: 'Средняя з/п на 1 сотрудника',
+    tax_preview: 'Расчёт налогов',
+    btn_view_kbk: 'Просмотр КБК',
+    btn_save_draft: 'Сохранить черновик',
+    kbk_title: 'КБК для оплаты',
+    total_to_pay: 'Всего к оплате',
+    btn_submit: 'Подписать и отправить',
+    btn_pdf: 'PDF',
+    btn_share: 'Поделиться',
+    my_declarations: 'Мои декларации',
+    profile_title: 'Профиль',
+    ecp_management: 'Управление ЭЦП',
+    btn_add_ecp: 'Добавить ключ',
+    signing_history: 'История подписаний',
+    settings_title: 'Настройки',
+    setting_language: 'Язык',
+    setting_notifications: 'Уведомления',
+    setting_clear: 'Очистить данные',
+    modal_statement_title: 'Загрузка выписки',
+    dropzone_title: 'Перетащите файл сюда',
+    dropzone_formats: 'или нажмите для выбора • CSV, Excel, PDF',
+    or_select_bank: 'или выберите банк',
+    btn_manual_entry: 'Ввести данные вручную',
+    modal_preview_title: 'Предпросмотр выписки',
+    btn_confirm: 'Подтвердить',
+    btn_edit_data: 'Изменить',
+    modal_validation_title: 'Проверка декларации',
+    btn_confirm_submit: 'Подписать и отправить',
+    btn_back: 'Вернуться',
+    success_title: 'Декларация отправлена!',
+    success_message: 'Ваша декларация успешно принята КГД',
+    btn_to_dashboard: 'На главную',
+    digital_id_instructions: 'Отсканируйте QR-код в приложении eGov Mobile',
+    btn_demo_login: 'Демо-вход (тест)',
+    nav_declarations: 'Декларации',
+    nav_new: 'Создать',
+    nav_profile: 'Профиль',
+    ipn_kbk: 'ИПН (КБК 101202)',
+    social_tax_kbk: 'Социальный налог (КБК 103101)',
+    opv_kbk: 'ОПВ (КБК 101201)',
+    so_kbk: 'Социальные отчисления (КБК 102102)',
+    ocms_kbk: 'ОСМС (КБК 921101)',
+    vosms_kbk: 'ВОСМС (КБК 921102)',
+    declaration_910: 'Декларация 910',
+    status_submitted: 'Подана',
+    status_draft: 'Черновик',
+    status_error: 'Ошибка'
+  },
+  kk: {
+    auth_title: 'Қолданбаға кіру',
+    auth_subtitle: 'Авторизация әдісін таңдаңыз',
+    tab_sms: 'SMS',
+    tab_ecp: 'ЭЦҚ',
+    phone_label: 'Телефон номері',
+    code_label: 'SMS коды',
+    code_resend: 'Қайталау арқылы',
+    btn_send_code: 'Код жіберу',
+    ecp_title: 'Электрондық цифрлық қолтаңба',
+    ecp_subtitle: 'Заңды тұлғалар мен ЖК үшін',
+    ecp_upload: 'Кілт файлын жүктеу',
+    password_label: 'Кілт паролі',
+    digital_id_title: 'Digital ID',
+    digital_id_subtitle: 'eGov Mobile арқылы авторизация',
+    btn_scan_qr: 'QR-кодты сканерлеу',
+    btn_login_ecp: 'ЭЦҚ-мен кіру',
+    app_title: '910 Декларация',
+    stat_submitted: 'Жіберілді',
+    stat_declarations: 'декларация',
+    stat_next: 'Келесі',
+    stat_deadline: 'Соңғы мерзім',
+    btn_new_declaration: 'Жаңа декларация',
+    btn_my_declarations: 'Менің декларацияларым',
+    recent_title: 'Соңғы декларациялар',
+    new_decl_title: 'Жаңа декларация',
+    regime_title: 'Режимді таңдаңыз',
+    regime_simplified_title: 'Жеңілдетілген декларация (910)',
+    regime_simplified_desc: 'Табыстың 3% мөлшері. Жұмысшысы жоқ ЖК немесе ЖЗ ≥ 23 АЕҚ',
+    regime_our_title: 'Жалпы белгіленген режим (ЖБР)',
+    regime_our_desc: 'ТЖБ 10%, ӘН, зейнетақы аударымдары, ӘК, МӘК. Толық есеп',
+    form_period: 'Салық кезеңі',
+    period_1half: '1 жартыжылдық',
+    period_2half: '2 жартыжылдық',
+    bank_statement_title: 'Банк шығысы',
+    btn_upload: 'Жүктеу',
+    btn_edit: 'Өзгерту',
+    total_income: 'Барлық табыс:',
+    cash_income: 'Қолма-қол:',
+    noncash_income: 'Қолма-қолсыз:',
+    statement_placeholder: 'Автотолтыру үшін шығысты жүктеңіз',
+    income_section: 'Табыстар',
+    field_income_total: 'Табыс (жалпы)',
+    field_income_cash: 'Қолма-қол',
+    field_income_noncash: 'Қолма-қолсыз',
+    employees_section: 'Қызметкерлер',
+    field_employees: 'Қызметкерлер саны',
+    field_salary: '1 қызметкерге орташа жалақы',
+    tax_preview: 'Салық есептеуі',
+    btn_view_kbk: 'КБК көру',
+    btn_save_draft: 'Жобаны сақтау',
+    kbk_title: 'Төлем КБК',
+    total_to_pay: 'Төлеуге барлығы',
+    btn_submit: 'Қол қою және жіберу',
+    btn_pdf: 'PDF',
+    btn_share: 'Бөлісу',
+    my_declarations: 'Менің декларацияларым',
+    profile_title: 'Профиль',
+    ecp_management: 'ЭЦҚ басқаруы',
+    btn_add_ecp: 'Кілт қосу',
+    signing_history: 'Қол қою тарихы',
+    settings_title: 'Параметрлер',
+    setting_language: 'Тіл',
+    setting_notifications: 'Хабарландырулар',
+    setting_clear: 'Деректерді тазалау',
+    modal_statement_title: 'Шығысты жүктеу',
+    dropzone_title: 'Файлды осы жерге апарыңыз',
+    dropzone_formats: 'немесе таңдау үшін басыңыз • CSV, Excel, PDF',
+    or_select_bank: 'немесе банкті таңдаңыз',
+    btn_manual_entry: 'Деректерді қолмен енгізу',
+    modal_preview_title: 'Шығыс алдын ала қарау',
+    btn_confirm: 'Растау',
+    btn_edit_data: 'Өзгерту',
+    modal_validation_title: 'Декларацияны тексеру',
+    btn_confirm_submit: 'Қол қою және жіберу',
+    btn_back: 'Қайту',
+    success_title: 'Декларация жіберілді!',
+    success_message: 'Декларацияңыз КМД қабылданды',
+    btn_to_dashboard: 'Басты бетке',
+    digital_id_instructions: 'eGov Mobile қолданбасында QR-кодты сканерлеңіз',
+    btn_demo_login: 'Демо-кіру (тест)',
+    nav_declarations: 'Декларациялар',
+    nav_new: 'Жасау',
+    nav_profile: 'Профиль',
+    ipn_kbk: 'ТЖБ (КБК 101202)',
+    social_tax_kbk: 'Әлеуметтік салық (КБК 103101)',
+    opv_kbk: 'Зейнетақы аударымдары (КБК 101201)',
+    so_kbk: 'Әлеуметтік аударымдар (КБК 102102)',
+    ocms_kbk: 'МӘК (КБК 921101)',
+    vosms_kbk: 'МӘКЖ (КБК 921102)',
+    declaration_910: '910 Декларация',
+    status_submitted: 'Жіберілді',
+    status_draft: 'Жоба',
+    status_error: 'Қате'
+  }
+};
+
+function t(key) {
+  return translations[state.language]?.[key] || key;
+}
+
+function updateTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    el.textContent = t(key);
+  });
+}
+
+// ==================== NAVIGATION ====================
+function navigateTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${screen}`).classList.add('active');
+  window.scrollTo(0, 0);
+  
+  if (screen === 'dashboard') loadDashboard();
+  if (screen === 'declarations') loadDeclarations();
+  if (screen === 'profile') loadProfile();
+}
+
+// ==================== LANGUAGE ====================
+function selectLanguage(lang) {
+  state.language = lang;
+  localStorage.setItem('language', lang);
+  updateTranslations();
+  navigateTo('auth');
+}
+
+// ==================== AUTH ====================
+function switchAuthTab(tab) {
+  const smsTab = document.getElementById('tab-sms');
+  const ecpTab = document.getElementById('tab-ecp');
+  const smsForm = document.getElementById('auth-sms');
+  const ecpForm = document.getElementById('auth-ecp');
+  
+  if (tab === 'sms') {
+    smsTab.classList.add('bg-white', 'shadow-sm');
+    smsTab.classList.remove('text-on-surface-variant');
+    ecpTab.classList.remove('bg-white', 'shadow-sm');
+    ecpTab.classList.add('text-on-surface-variant');
+    smsForm.classList.remove('hidden');
+    ecpForm.classList.add('hidden');
+  } else {
+    ecpTab.classList.add('bg-white', 'shadow-sm');
+    ecpTab.classList.remove('text-on-surface-variant');
+    smsTab.classList.remove('bg-white', 'shadow-sm');
+    smsTab.classList.add('text-on-surface-variant');
+    ecpForm.classList.remove('hidden');
+    smsForm.classList.add('hidden');
+  }
+}
+
+function sendSms() {
+  const phone = document.getElementById('phone-input').value;
+  if (!phone || phone.length < 10) {
+    showToast('Введите корректный номер телефона');
+    return;
+  }
+  
+  document.getElementById('sms-code-section').classList.remove('hidden');
+  document.getElementById('btn-send-sms').disabled = true;
+  
+  let timeLeft = 60;
+  const timer = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timer').textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      document.getElementById('btn-send-sms').disabled = false;
+      document.getElementById('btn-send-sms').querySelector('span').textContent = 'Повторить';
+    }
+  }, 1000);
+  
+  // Demo: auto-fill code
+  setTimeout(() => {
+    document.getElementById('sms-code').value = '123456';
+    simulateLogin();
+  }, 2000);
+}
+
+function handleEcpFile(input) {
+  if (input.files && input.files[0]) {
+    document.getElementById('ecp-password-section').classList.remove('hidden');
+    document.getElementById('btn-ecp-login').disabled = false;
+    document.getElementById('ecp-drop-zone').querySelector('p.font-semibold').textContent = input.files[0].name;
+  }
+}
+
+function loginWithEcp() {
+  const password = document.getElementById('ecp-password').value;
+  if (!password) {
+    showToast('Введите пароль к ключу');
+    return;
+  }
+  simulateLogin();
+}
+
+function showDigitalIdModal() {
+  openModal('digital-id');
+}
+
+function simulateDigitalIdLogin() {
+  closeModal('digital-id');
+  simulateLogin();
+}
+
+function simulateLogin() {
+  state.user = {
+    name: 'ИП Бизнес Ко',
+    bin: '940312300456',
+    address: 'г. Астана',
+    oked: '62011'
+  };
+  localStorage.setItem('user', JSON.stringify(state.user));
+  navigateTo('dashboard');
+}
+
+// ==================== DASHBOARD ====================
+function loadDashboard() {
+  document.getElementById('user-name').textContent = state.user.name;
+  document.getElementById('stat-submitted').textContent = state.declarations.filter(d => d.status === 'submitted').length;
+  
+  // Recent declarations
+  const recentList = document.getElementById('recent-list');
+  const recent = state.declarations.slice(-3).reverse();
+  
+  if (recent.length === 0) {
+    recentList.innerHTML = `
+      <div class="card p-6 text-center">
+        <span class="material-symbols-outlined text-4xl text-on-surface-variant/50 mb-2 block">folder_open</span>
+        <p class="text-on-surface-variant">У вас пока нет деклараций</p>
+      </div>
+    `;
+  } else {
+    recentList.innerHTML = recent.map(d => `
+      <div class="card p-4 flex items-center justify-between" onclick="viewDeclaration('${d.id}')">
+        <div>
+          <div class="font-semibold">${d.regime === 'simplified' ? 'Форма 910' : 'ОУР'}</div>
+          <div class="text-sm text-on-surface-variant">${d.period.year} ${d.period.half === 1 ? '1 п/г' : '2 п/г'}</div>
+        </div>
+        <div class="text-right">
+          <div class="font-bold text-primary">${formatMoney(d.calculations.total || 0)}</div>
+          <div class="badge-${d.status === 'submitted' ? 'success' : 'warning'} text-xs px-2 py-1 rounded-full">
+            ${d.status === 'submitted' ? t('status_submitted') : t('status_draft')}
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// ==================== DECLARATION FORM ====================
+function selectRegime(regime) {
+  state.currentRegime = regime;
+  state.currentDeclaration = {
+    period: { year: 2025, half: 1 },
+    income: { total: 0, cash: 0, noncash: 0 },
+    employees: 0,
+    salary: 85000,
+    calculations: {}
+  };
+  
+  document.getElementById('form-title').textContent = regime === 'simplified' ? 'Форма 910' : 'ОУР';
+  
+  // Show/hide employees section
+  const employeesSection = document.getElementById('employees-section');
+  if (regime === 'simplified') {
+    employeesSection.classList.remove('hidden');
+  } else {
+    employeesSection.classList.add('hidden');
+  }
+  
+  navigateTo('declaration-form');
+  calculateTax();
+}
+
+function calculateTax() {
+  const totalIncome = parseFloat(document.getElementById('income-total').value) || 0;
+  const cashIncome = parseFloat(document.getElementById('income-cash').value) || 0;
+  const nonCashIncome = parseFloat(document.getElementById('income-noncash').value) || 0;
+  const employees = parseInt(document.getElementById('employees-count')?.value) || 0;
+  const salary = parseFloat(document.getElementById('avg-salary')?.value) || 85000;
+  
+  state.currentDeclaration.income = { total: totalIncome, cash: cashIncome, noncash: nonCashIncome };
+  state.currentDeclaration.employees = employees;
+  state.currentDeclaration.salary = salary;
+  
+  let ipn = 0;
+  let socialTax = 0;
+  
+  if (state.currentRegime === 'simplified') {
+    // Упрощённая декларация: 3% от дохода
+    // ИПН = 1.5%, Социальный налог = 1.5% - СО
+    ipn = totalIncome * 0.015;
+    socialTax = totalIncome * 0.015 - (employees > 0 ? 0 : 20825); // Минимальные СО за ИП
+  } else {
+    // ОУР: ИПН 10%
+    const taxableIncome = Math.max(0, totalIncome - 1020000); // Вычет МЗП
+    ipn = taxableIncome * 0.1;
+    // Социальный налог = 2 МРП за квартал
+    const mrп = 3932;
+    socialTax = 2 * mrп;
+  }
+  
+  const total = ipn + socialTax;
+  
+  document.getElementById('tax-ipn').textContent = formatMoney(ipn);
+  document.getElementById('tax-social').textContent = formatMoney(socialTax);
+  document.getElementById('tax-total').textContent = formatMoney(total);
+  
+  state.currentDeclaration.calculations = {
+    ipn, socialTax, total,
+    byKbk: [
+      { kbk: '101202', name: t('ipn_kbk'), amount: ipn },
+      { kbk: '103101', name: t('social_tax_kbk'), amount: socialTax }
+    ]
+  };
+}
+
+function saveDraft() {
+  const declaration = {
+    id: `draft-${Date.now()}`,
+    ...state.currentDeclaration,
+    status: 'draft',
+    createdAt: new Date().toISOString()
+  };
+  
+  state.declarations.push(declaration);
+  localStorage.setItem('declarations', JSON.stringify(state.declarations));
+  
+  showToast('Черновик сохранён');
+}
+
+function showKbkList() {
+  calculateTax();
+  
+  const kbkList = document.getElementById('kbk-list');
+  const kbkData = state.currentDeclaration.calculations.byKbk || [];
+  const total = state.currentDeclaration.calculations.total || 0;
+  
+  document.getElementById('kbk-grand-total').textContent = formatMoney(total);
+  document.getElementById('kbk-period').textContent = `${state.currentDeclaration.period.year} ${state.currentDeclaration.period.half === 1 ? '1 п/г' : '2 п/г'}`;
+  
+  kbkList.innerHTML = kbkData.map(item => `
+    <div class="card p-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <div class="font-semibold">${item.name}</div>
+          <div class="text-sm text-on-surface-variant">КБК ${item.kbk}</div>
+        </div>
+        <div class="text-right">
+          <div class="font-display font-bold text-lg text-primary">${formatMoney(item.amount)}</div>
+          <div class="w-24 h-1 bg-surface-container-highest rounded-full mt-2 overflow-hidden">
+            <div class="h-full bg-primary rounded-full" style="width: ${total > 0 ? (item.amount / total * 100) : 0}%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  
+  navigateTo('kbk');
+}
+
+// ==================== VALIDATION ====================
+function showValidation() {
+  const results = document.getElementById('validation-results');
+  const checks = [];
+  
+  // Basic checks
+  if (state.currentDeclaration.income.total <= 0) {
+    checks.push({ type: 'warning', message: 'Укажите сумму дохода' });
+  }
+  
+  if (state.currentDeclaration.income.total > 24038 * 3932 && state.currentRegime === 'simplified') {
+    checks.push({ type: 'error', message: 'Превышен лимит дохода для упрощёнки (24 038 МРП)' });
+  }
+  
+  if (state.currentDeclaration.employees > 30 && state.currentRegime === 'simplified') {
+    checks.push({ type: 'error', message: 'Превышен лимит работников (максимум 30)' });
+  }
+  
+  // Render results
+  results.innerHTML = checks.map(check => `
+    <div class="flex items-center gap-3 p-3 rounded-xl ${check.type === 'error' ? 'bg-error-container' : 'bg-surface-container-low'}">
+      <span class="material-symbols-outlined ${check.type === 'error' ? 'text-error' : 'text-tertiary'}">
+        ${check.type === 'error' ? 'error' : 'warning'}
+      </span>
+      <span class="${check.type === 'error' ? 'text-error' : ''}">${check.message}</span>
+    </div>
+  `).join('') || `
+    <div class="flex items-center gap-3 p-3 rounded-xl bg-tertiary-fixed">
+      <span class="material-symbols-outlined text-tertiary">check_circle</span>
+      <span class="text-tertiary">Все проверки пройдены</span>
+    </div>
+  `;
+  
+  document.getElementById('btn-confirm-submit').disabled = checks.some(c => c.type === 'error');
+  
+  openModal('validation');
+}
+
+function submitDeclaration() {
+  closeModal('validation');
+  
+  // Create final declaration
+  const declaration = {
+    id: `910-${new Date().getFullYear()}-${String(state.declarations.filter(d => d.status === 'submitted').length + 1).padStart(6, '0')}`,
+    ...state.currentDeclaration,
+    status: 'submitted',
+    createdAt: new Date().toISOString(),
+    submittedAt: new Date().toISOString()
+  };
+  
+  state.declarations.push(declaration);
+  localStorage.setItem('declarations', JSON.stringify(state.declarations));
+  
+  // Add to signing history
+  state.signingHistory.unshift({
+    id: declaration.id,
+    documentType: 'ФНО 910.00',
+    signedAt: new Date().toISOString(),
+    status: 'signed'
+  });
+  localStorage.setItem('signingHistory', JSON.stringify(state.signingHistory));
+  
+  document.getElementById('declaration-id').textContent = declaration.id;
+  openModal('success');
+}
+
+// ==================== BANK STATEMENT ====================
+function showStatementModal() {
+  openModal('statement');
+}
+
+function handleStatementFile(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      const content = e.target.result;
+      parseStatement(content, file.name);
+    };
+    
+    reader.readAsText(file);
+  }
+}
+
+function parseStatement(content, filename) {
+  // Demo parsing - in real app would use proper CSV/Excel/PDF parser
+  // For demo, generate sample data
+  const lines = content.split('\n');
+  let totalIncome = 0;
+  let cashIncome = 0;
+  let nonCashIncome = 0;
+  
+  // Simple CSV parsing demo
+  lines.forEach(line => {
+    const parts = line.split(',');
+    if (parts.length >= 2) {
+      const amount = parseFloat(parts[1]) || 0;
+      if (amount > 0) {
+        totalIncome += amount;
+        // Demo: first column indicates type
+        if (parts[0]?.toLowerCase().includes('cash')) {
+          cashIncome += amount;
+        } else {
+          nonCashIncome += amount;
+        }
+      }
+    }
+  });
+  
+  // Demo: if no data parsed, generate sample
+  if (totalIncome === 0) {
+    totalIncome = Math.floor(Math.random() * 10000000) + 1000000;
+    nonCashIncome = Math.floor(totalIncome * 0.7);
+    cashIncome = totalIncome - nonCashIncome;
+  }
+  
+  state.statementData = {
+    filename,
+    total: totalIncome,
+    cash: cashIncome,
+    noncash: nonCashIncome,
+    bank: filename.includes('kaspi') ? 'Kaspi Pay' : 
+          filename.includes('halyk') ? 'Halyk Bank' : 
+          filename.includes('jusan') ? 'Jusan Bank' : 'Банк'
+  };
+  
+  showStatementPreview();
+}
+
+function showStatementPreview() {
+  const preview = document.getElementById('preview-content');
+  const data = state.statementData;
+  
+  preview.innerHTML = `
+    <div class="card p-4">
+      <div class="flex items-center justify-between mb-4">
+        <span class="font-semibold">${data.bank}</span>
+        <span class="text-sm text-on-surface-variant">${data.filename}</span>
+      </div>
+      
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <span class="text-on-surface-variant">${t('total_income')}</span>
+          <span class="font-display font-bold text-xl text-primary">${formatMoney(data.total)}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">${t('cash_income')}</span>
+          <span>${formatMoney(data.cash)}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">${t('noncash_income')}</span>
+          <span>${formatMoney(data.noncash)}</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Monthly breakdown (demo) -->
+    <div class="card p-4">
+      <h4 class="font-semibold mb-3">${t('income_section')}</h4>
+      <div class="space-y-2">
+        ${['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь'].map((month, i) => {
+          const amount = Math.floor(data.total / 6);
+          return `
+            <div class="flex justify-between items-center py-2">
+              <span class="text-sm text-on-surface-variant">${month}</span>
+              <div class="flex items-center gap-2">
+                <div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+                  <div class="h-full bg-primary rounded-full" style="width: ${(i + 1) * 15}%"></div>
+                </div>
+                <span class="text-sm font-medium w-24 text-right">${formatMoney(amount)}</span>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+  
+  closeModal('statement');
+  openModal('statement-preview');
+}
+
+function confirmStatement() {
+  if (state.statementData) {
+    document.getElementById('income-total').value = state.statementData.total;
+    document.getElementById('income-cash').value = state.statementData.cash;
+    document.getElementById('income-noncash').value = state.statementData.noncash;
+    
+    document.getElementById('statement-total').textContent = formatMoney(state.statementData.total);
+    document.getElementById('statement-cash').textContent = formatMoney(state.statementData.cash);
+    document.getElementById('statement-noncash').textContent = formatMoney(state.statementData.noncash);
+    document.getElementById('statement-bank').textContent = state.statementData.bank;
+    
+    document.getElementById('statement-preview').classList.remove('hidden');
+    document.getElementById('statement-placeholder').classList.add('hidden');
+    
+    calculateTax();
+  }
+  
+  closeModal('statement-preview');
+}
+
+function editStatement() {
+  showStatementModal();
+}
+
+function selectBankPreset(bank) {
+  // In real app, would initiate bank-specific flow
+  const presets = {
+    kaspi: { total: 15000000, cash: 4500000, noncash: 10500000 },
+    halyk: { total: 12000000, cash: 2000000, noncash: 10000000 },
+    jusan: { total: 8000000, cash: 1000000, noncash: 7000000 }
+  };
+  
+  const data = presets[bank];
+  state.statementData = {
+    filename: `${bank}_statement.csv`,
+    ...data,
+    bank: bank.charAt(0).toUpperCase() + bank.slice(1)
+  };
+  
+  showStatementPreview();
+}
+
+function showManualEntry() {
+  closeModal('statement');
+  confirmStatement();
+}
+
+// ==================== DECLARATIONS LIST ====================
+function loadDeclarations() {
+  const list = document.getElementById('declarations-list');
+  
+  if (state.declarations.length === 0) {
+    list.innerHTML = `
+      <div class="card p-8 text-center">
+        <span class="material-symbols-outlined text-5xl text-on-surface-variant/30 mb-4 block">folder_open</span>
+        <p class="text-on-surface-variant mb-4">У вас пока нет деклараций</p>
+        <button onclick="navigateTo('new-declaration')" class="btn-primary px-6 py-3">
+          Создать первую
+        </button>
+      </div>
+    `;
+    return;
+  }
+  
+  list.innerHTML = state.declarations.map(d => `
+    <div class="card p-4 cursor-pointer" onclick="viewDeclaration('${d.id}')">
+      <div class="flex justify-between items-start mb-3">
+        <div>
+          <div class="font-display font-bold">${d.regime === 'simplified' ? 'ФНО 910.00' : 'ОУР'}</div>
+          <div class="text-sm text-on-surface-variant">
+            ${d.period.year} ${d.period.half === 1 ? '1 полугодие' : '2 полугодие'}
+          </div>
+        </div>
+        <div class="badge-${d.status === 'submitted' ? 'success' : d.status === 'error' ? 'error' : 'warning'} px-3 py-1 rounded-full text-xs font-medium">
+          ${d.status === 'submitted' ? t('status_submitted') : d.status === 'error' ? t('status_error') : t('status_draft')}
+        </div>
+      </div>
+      <div class="flex justify-between items-center">
+        <div class="text-sm text-on-surface-variant">
+          ${new Date(d.createdAt).toLocaleDateString('ru-RU')}
+        </div>
+        <div class="font-display font-bold text-lg text-primary">
+          ${formatMoney(d.calculations.total || 0)}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterDeclarations(filter) {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('bg-primary', 'text-white');
+    btn.classList.add('bg-surface-container-low', 'text-on-surface-variant');
+  });
+  
+  const activeBtn = document.querySelector(`[data-filter="${filter}"]`);
+  activeBtn.classList.add('bg-primary', 'text-white');
+  activeBtn.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
+  
+  // Filter logic would go here
+}
+
+function viewDeclaration(id) {
+  const decl = state.declarations.find(d => d.id === id);
+  if (decl) {
+    state.currentDeclaration = decl;
+    navigateTo('declaration-form');
+  }
+}
+
+// ==================== PROFILE ====================
+function loadProfile() {
+  document.getElementById('profile-name').textContent = state.user.name;
+  document.getElementById('profile-bin').textContent = state.user.bin;
+  document.getElementById('profile-address').textContent = state.user.address;
+  document.getElementById('profile-oked').textContent = state.user.oked;
+  document.getElementById('current-lang').textContent = state.language === 'ru' ? 'Русский' : 'Қазақша';
+  
+  // ECP Keys
+  const ecpList = document.getElementById('ecp-keys-list');
+  if (state.ecpKeys.length === 0) {
+    ecpList.innerHTML = `
+      <div class="text-center py-4 text-on-surface-variant text-sm">
+        Нет загруженных ключей
+      </div>
+    `;
+  } else {
+    ecpList.innerHTML = state.ecpKeys.map((key, i) => `
+      <div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary">key</span>
+          <div>
+            <div class="font-medium text-sm">${key.name}</div>
+            <div class="text-xs text-on-surface-variant">Действителен до: ${key.expiry}</div>
+          </div>
+        </div>
+        <button onclick="removeEcpKey(${i})" class="p-2 text-error">
+          <span class="material-symbols-outlined text-sm">delete</span>
+        </button>
+      </div>
+    `).join('');
+  }
+  
+  // Signing History
+  const history = document.getElementById('signing-history');
+  if (state.signingHistory.length === 0) {
+    history.innerHTML = `
+      <div class="text-center py-4 text-on-surface-variant text-sm">
+        История пуста
+      </div>
+    `;
+  } else {
+    history.innerHTML = state.signingHistory.slice(0, 5).map(item => `
+      <div class="flex items-center justify-between py-2">
+        <div>
+          <div class="text-sm">${item.documentType}</div>
+          <div class="text-xs text-on-surface-variant">${new Date(item.signedAt).toLocaleDateString('ru-RU')}</div>
+        </div>
+        <span class="material-symbols-outlined text-tertiary">check_circle</span>
+      </div>
+    `).join('');
+  }
+}
+
+function lookupByBin() {
+  // Demo: would call eGov API
+  showToast('Данные обновлены из eGov.kz');
+}
+
+function showAddEcpModal() {
+  document.getElementById('ecp-file').click();
+}
+
+function removeEcpKey(index) {
+  state.ecpKeys.splice(index, 1);
+  localStorage.setItem('ecpKeys', JSON.stringify(state.ecpKeys));
+  loadProfile();
+}
+
+function toggleLanguage() {
+  const newLang = state.language === 'ru' ? 'kk' : 'ru';
+  selectLanguage(newLang);
+}
+
+function clearData() {
+  if (confirm('Вы уверены? Все данные будут удалены.')) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+// ==================== UTILITIES ====================
+function formatMoney(amount) {
+  return new Intl.NumberFormat('ru-RU').format(Math.round(amount)) + ' ₸';
+}
+
+function openModal(name) {
+  document.getElementById(`modal-${name}`).classList.add('active');
+}
+
+function closeModal(name) {
+  document.getElementById(`modal-${name}`).classList.remove('active');
+}
+
+function showToast(message) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
+
+function exportToPdf() {
+  showToast('PDF будет создан в ближайшем обновлении');
+}
+
+function shareDeclaration() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Декларация 910',
+      text: `Моя декларация: ${formatMoney(state.currentDeclaration.calculations.total || 0)}`,
+      url: window.location.href
+    });
+  } else {
+    showToast('Скопируйте ссылку для распространения');
+  }
+}
+
+// ==================== INITIALIZATION ====================
+document.addEventListener('DOMContentLoaded', () => {
+  updateTranslations();
+  
+  // Check if user is logged in
+  const hasUser = localStorage.getItem('user');
+  if (hasUser) {
+    navigateTo('dashboard');
+  }
+  
+  // Add demo data if empty
+  if (state.declarations.length === 0) {
+    state.declarations = [
+      {
+        id: '910-2025-000001',
+        regime: 'simplified',
+        period: { year: 2025, half: 1 },
+        income: { total: 10000000, cash: 3000000, noncash: 7000000 },
+        employees: 2,
+        salary: 200000,
+        calculations: { total: 300000, ipn: 150000, socialTax: 150000 },
+        status: 'submitted',
+        createdAt: '2025-08-10T12:00:00Z'
+      }
+    ];
+    localStorage.setItem('declarations', JSON.stringify(state.declarations));
+  }
+  
+  // Set up drag and drop
+  const dropZone = document.getElementById('statement-drop');
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('dragover');
+  });
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) {
+      document.getElementById('statement-file').files = e.dataTransfer.files;
+      handleStatementFile(document.getElementById('statement-file'));
+    }
+  });
+});
+
+// Demo ECP key loading
+document.getElementById('ecp-file')?.addEventListener('change', function() {
+  if (this.files && this.files[0]) {
+    state.ecpKeys.push({
+      name: this.files[0].name,
+      expiry: '01.2027',
+      addedAt: new Date().toISOString()
+    });
+    localStorage.setItem('ecpKeys', JSON.stringify(state.ecpKeys));
+    loadProfile();
+    showToast('Ключ загружен');
+  }
+});
+</script>
+</body>
+</html>
