@@ -1573,8 +1573,8 @@ function calculateTax() {
     const taxableIncome = Math.max(0, totalIncome - 1020000); // Вычет МЗП
     ipn = taxableIncome * 0.1;
     // Социальный налог = 2 МРП за квартал
-    const mrп = 3932;
-    socialTax = 2 * mrп;
+    const mrp = 3932;
+    socialTax = 2 * mrp;
   }
   
   const total = ipn + socialTax;
@@ -1593,9 +1593,15 @@ function calculateTax() {
 }
 
 function saveDraft() {
+  calculateTax();
   const declaration = {
     id: `draft-${Date.now()}`,
-    ...state.currentDeclaration,
+    regime: state.currentRegime,
+    period: { ...state.currentDeclaration.period },
+    income: { ...state.currentDeclaration.income },
+    employees: state.currentDeclaration.employees,
+    salary: state.currentDeclaration.salary,
+    calculations: { ...state.currentDeclaration.calculations },
     status: 'draft',
     createdAt: new Date().toISOString()
   };
@@ -1679,7 +1685,12 @@ async function submitDeclaration() {
   
   const declaration = {
     id: `910-${new Date().getFullYear()}-${String(state.declarations.filter(d => d.status === 'submitted').length + 1).padStart(6, '0')}`,
-    ...state.currentDeclaration,
+    regime: state.currentRegime,
+    period: { ...state.currentDeclaration.period },
+    income: { ...state.currentDeclaration.income },
+    employees: state.currentDeclaration.employees,
+    salary: state.currentDeclaration.salary,
+    calculations: { ...state.currentDeclaration.calculations },
     status: 'pending',
     createdAt: new Date().toISOString()
   };
@@ -1934,8 +1945,30 @@ function filterDeclarations(filter) {
 function viewDeclaration(id) {
   const decl = state.declarations.find(d => d.id === id);
   if (decl) {
-    state.currentDeclaration = decl;
+    state.currentDeclaration = JSON.parse(JSON.stringify(decl));
+    state.currentRegime = decl.regime;
+    
+    document.getElementById('form-title').textContent = decl.regime === 'simplified' ? 'Форма 910' : 'ОУР';
+    document.getElementById('income-total').value = decl.income.total || 0;
+    document.getElementById('income-cash').value = decl.income.cash || 0;
+    document.getElementById('income-noncash').value = decl.income.noncash || 0;
+    document.getElementById('employees-count').value = decl.employees || 0;
+    document.getElementById('avg-salary').value = decl.salary || 85000;
+    
+    const yearSelect = document.getElementById('period-year');
+    const halfSelect = document.getElementById('period-half');
+    if (yearSelect) yearSelect.value = decl.period.year;
+    if (halfSelect) halfSelect.value = decl.period.half;
+    
+    const employeesSection = document.getElementById('employees-section');
+    if (decl.regime === 'simplified') {
+      employeesSection.classList.remove('hidden');
+    } else {
+      employeesSection.classList.add('hidden');
+    }
+    
     navigateTo('declaration-form');
+    calculateTax();
   }
 }
 
@@ -2072,7 +2105,7 @@ function exportForKnz() {
     income: {
       total: decl.income.total || 0,
       cash: decl.income.cash || 0,
-      nonCash: decl.income.nonCash || 0
+      noncash: decl.income.noncash || 0
     },
     employees: decl.employees || 0,
     calculations: {
@@ -2102,7 +2135,7 @@ function exportForKnz() {
 ДОХОДЫ:
   Общий доход: ${formatMoney(decl.income.total || 0)}
   Наличный: ${formatMoney(decl.income.cash || 0)}
-  Безналичный: ${formatMoney(decl.income.nonCash || 0)}
+  Безналичный: ${formatMoney(decl.income.noncash || 0)}
 
 РАБОТНИКИ: ${decl.employees || 0} человек
 
