@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Marketing 5.0 Coach — Furniture Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5; --primary-light: #818cf8; --primary-dark: #3730a3;
+            --surface: #f8fafc; --surface-card: #ffffff;
+            --text-primary: #1e293b; --text-secondary: #64748b;
+            --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--surface); min-height: 100dvh; }
+        .font-display { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(100%); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+        .card { background: var(--surface-card); border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        .card:hover { box-shadow: 0 8px 30px rgba(79,70,229,0.1); transform: translateY(-2px); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 12px; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 15px rgba(79,70,229,0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(79,70,229,0.4); }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-secondary { background: var(--surface-card); color: var(--primary); border: 2px solid var(--primary-light); border-radius: 12px; font-weight: 600; transition: all 0.2s; }
+        .btn-secondary:hover { background: var(--primary); color: white; }
+        .btn-ghost { background: transparent; color: var(--text-secondary); transition: all 0.2s; }
+        .btn-ghost:hover { background: rgba(79,70,229,0.1); color: var(--primary); }
+        .input-field { background: var(--surface); border: 2px solid transparent; border-radius: 12px; padding: 14px 16px; width: 100%; transition: all 0.2s; }
+        .input-field:focus { background: white; border-color: var(--primary-light); box-shadow: 0 0 0 4px rgba(79,70,229,0.1); }
+        .scale-option { width: 48px; height: 48px; border-radius: 12px; border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-weight: 600; color: var(--text-secondary); }
+        .scale-option:hover { border-color: var(--primary-light); color: var(--primary); }
+        .scale-option.selected { background: var(--primary); border-color: var(--primary); color: white; transform: scale(1.1); }
+        .progress-bar { height: 6px; border-radius: 3px; background: #e2e8f0; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 3px; transition: width 0.5s ease; }
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.3s ease-out; }
+        .chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .chip-success { background: #d1fae5; color: #065f46; }
+        .chip-warning { background: #fef3c7; color: #92400e; }
+        .chip-primary { background: #e0e7ff; color: #3730a3; }
+        .tactic-card { transition: all 0.3s ease; cursor: pointer; }
+        .tactic-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(79,70,229,0.15); }
+        .journey-stage { position: relative; padding-left: 32px; }
+        .journey-stage::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: #e2e8f0; }
+        .journey-stage:last-child::before { display: none; }
+        .journey-dot { position: absolute; left: 0; top: 4px; width: 24px; height: 24px; border-radius: 50%; background: #e2e8f0; border: 4px solid var(--surface); z-index: 1; }
+        .journey-stage.active .journey-dot { background: var(--primary); box-shadow: 0 0 0 4px rgba(79,70,229,0.2); }
+        .journey-stage.completed .journey-dot { background: var(--success); }
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text-primary); color: white; padding: 14px 24px; border-radius: 12px; font-weight: 500; z-index: 1000; opacity: 0; transition: all 0.3s ease; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: white; border-radius: 20px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease-out; }
+        .tab-btn { padding: 10px 20px; border-radius: 10px; font-weight: 500; transition: all 0.2s; }
+        .tab-btn.active { background: var(--primary); color: white; }
+        .tab-btn:not(.active) { background: #e2e8f0; color: var(--text-secondary); }
+        .bot-node { border: 2px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px; background: white; transition: all 0.2s; }
+        .bot-node:hover { border-color: var(--primary-light); }
+        .bot-node.selected { border-color: var(--primary); background: #e0e7ff; }
+        .bot-connector { position: relative; padding-left: 20px; }
+        .bot-connector::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: #e2e8f0; }
+        .sprint-card { border-left: 4px solid var(--primary); }
+    </style>
+</head>
+<body class="pb-28">
+    <div id="app">
+        <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-100">
+            <div class="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div>
+                    <h1 class="font-display text-xl font-bold text-primary">Marketing 5.0</h1>
+                    <p class="text-xs text-gray-500">Furniture Studio Coach</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="exportAllData()" class="p-2 rounded-full hover:bg-gray-100" title="Экспорт">
+                        <span class="material-symbols-outlined text-gray-600">download</span>
+                    </button>
+                    <button onclick="toggleMenu()" class="p-2 rounded-full hover:bg-gray-100">
+                        <span class="material-symbols-outlined text-gray-600">menu</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-2xl mx-auto px-6 py-6">
+            
+            <!-- D1: Onboarding -->
+            <div id="screen-onboarding" class="screen active">
+                <div class="text-center mb-8">
+                    <div class="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-xl animate-fade-in">
+                        <span class="material-symbols-outlined text-white text-5xl">rocket_launch</span>
+                    </div>
+                    <h1 class="font-display text-3xl font-bold text-gray-800 mb-3">Marketing 5.0</h1>
+                    <p class="text-gray-500">Диагностика для мебельной студии</p>
+                </div>
+                
+                <div class="card p-6 mb-6">
+                    <p class="text-gray-600 leading-relaxed text-lg">
+                        <strong class="text-primary">Маркетинг 5.0</strong> — применение имитирующих человека технологий 
+                        (<span class="text-primary font-medium">ИИ, чат‑боты, 3D‑визуализация</span>) 
+                        для создания ценности для клиента на всем пути.
+                    </p>
+                </div>
+                
+                <div class="space-y-4 mb-8">
+                    <div class="flex items-start gap-4 p-4 bg-white rounded-xl border border-gray-100">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-blue-600 text-xl">analytics</span></div>
+                        <div><h3 class="font-semibold text-gray-800">Data-Driven</h3><p class="text-sm text-gray-500">Анализ данных о клиентах и заказах</p></div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 bg-white rounded-xl border border-gray-100">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-green-600 text-xl">psychology</span></div>
+                        <div><h3 class="font-semibold text-gray-800">Предиктивный</h3><p class="text-sm text-gray-500">Прогнозирование спроса и загрузки</p></div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 bg-white rounded-xl border border-gray-100">
+                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-purple-600 text-xl">auto_awesome</span></div>
+                        <div><h3 class="font-semibold text-gray-800">Дополненный</h3><p class="text-sm text-gray-500">Чат-боты, 3D-визуализация, AR</p></div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 bg-white rounded-xl border border-gray-100">
+                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-orange-600 text-xl">context</span></div>
+                        <div><h3 class="font-semibold text-gray-800">Контекстуальный</h3><p class="text-sm text-gray-500">Персонализированные офферы по сегментам</p></div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 bg-white rounded-xl border border-gray-100">
+                        <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-pink-600 text-xl">loop</span></div>
+                        <div><h3 class="font-semibold text-gray-800">Agile</h3><p class="text-sm text-gray-500">Гибкие спринты и быстрая адаптация</p></div>
+                    </div>
+                </div>
+                
+                <button onclick="showScreen('assessment')" class="btn-primary w-full py-4 text-lg">
+                    <span class="material-symbols-outlined mr-2">play_arrow</span>Начать диагностику
+                </button>
+            </div>
+
+            <!-- D2: Assessment -->
+            <div id="screen-assessment" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('onboarding')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Оценка готовности</h1><p class="text-sm text-gray-500">5 элементов Marketing 5.0</p></div>
+                </div>
+                
+                <div class="progress-bar mb-6"><div class="progress-fill" id="assessment-progress" style="width: 0%"></div></div>
+                
+                <div class="space-y-4" id="assessment-cards">
+                    <div class="card p-5" data-field="data_driven">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-blue-600 text-xl">database</span></div>
+                            <div><h3 class="font-semibold text-gray-800">Основанный на данных</h3><p class="text-xs text-gray-500">Data-Driven</p></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">Оцените наличие и использование данных о клиентах и заказах.</p>
+                        <div class="flex justify-between">
+                            <div class="scale-option" onclick="selectScale(this, 'data_driven_score', 1)">1</div>
+                            <div class="scale-option" onclick="selectScale(this, 'data_driven_score', 2)">2</div>
+                            <div class="scale-option" onclick="selectScale(this, 'data_driven_score', 3)">3</div>
+                            <div class="scale-option" onclick="selectScale(this, 'data_driven_score', 4)">4</div>
+                            <div class="scale-option" onclick="selectScale(this, 'data_driven_score', 5)">5</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-5" data-field="agile">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-pink-600 text-xl">loop</span></div>
+                            <div><h3 class="font-semibold text-gray-800">Гибкий (Agile)</h3><p class="text-xs text-gray-500">Agile Marketing</p></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">Оцените тестирование гипотез и работу короткими циклами.</p>
+                        <div class="flex justify-between">
+                            <div class="scale-option" onclick="selectScale(this, 'agile_score', 1)">1</div>
+                            <div class="scale-option" onclick="selectScale(this, 'agile_score', 2)">2</div>
+                            <div class="scale-option" onclick="selectScale(this, 'agile_score', 3)">3</div>
+                            <div class="scale-option" onclick="selectScale(this, 'agile_score', 4)">4</div>
+                            <div class="scale-option" onclick="selectScale(this, 'agile_score', 5)">5</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-5" data-field="predictive">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-purple-600 text-xl">trending_up</span></div>
+                            <div><h3 class="font-semibold text-gray-800">Предиктивный</h3><p class="text-xs text-gray-500">Predictive Marketing</p></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">Оцените прогнозирование спроса и загрузки производства.</p>
+                        <div class="flex justify-between">
+                            <div class="scale-option" onclick="selectScale(this, 'predictive_score', 1)">1</div>
+                            <div class="scale-option" onclick="selectScale(this, 'predictive_score', 2)">2</div>
+                            <div class="scale-option" onclick="selectScale(this, 'predictive_score', 3)">3</div>
+                            <div class="scale-option" onclick="selectScale(this, 'predictive_score', 4)">4</div>
+                            <div class="scale-option" onclick="selectScale(this, 'predictive_score', 5)">5</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-5" data-field="context">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-orange-600 text-xl">context</span></div>
+                            <div><h3 class="font-semibold text-gray-800">Контекстуальный</h3><p class="text-xs text-gray-500">Contextual Marketing</p></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">Учитываете контекст клиента (тип жилья, этап ремонта)?</p>
+                        <div class="flex justify-between">
+                            <div class="scale-option" onclick="selectScale(this, 'context_score', 1)">1</div>
+                            <div class="scale-option" onclick="selectScale(this, 'context_score', 2)">2</div>
+                            <div class="scale-option" onclick="selectScale(this, 'context_score', 3)">3</div>
+                            <div class="scale-option" onclick="selectScale(this, 'context_score', 4)">4</div>
+                            <div class="scale-option" onclick="selectScale(this, 'context_score', 5)">5</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-5" data-field="augmented">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-cyan-600 text-xl">smart_toy</span></div>
+                            <div><h3 class="font-semibold text-gray-800">Дополненный</h3><p class="text-xs text-gray-500">Augmented Marketing</p></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">Используете чат‑боты, визуализацию, AR/3D?</p>
+                        <div class="flex justify-between">
+                            <div class="scale-option" onclick="selectScale(this, 'augmented_score', 1)">1</div>
+                            <div class="scale-option" onclick="selectScale(this, 'augmented_score', 2)">2</div>
+                            <div class="scale-option" onclick="selectScale(this, 'augmented_score', 3)">3</div>
+                            <div class="scale-option" onclick="selectScale(this, 'augmented_score', 4)">4</div>
+                            <div class="scale-option" onclick="selectScale(this, 'augmented_score', 5)">5</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="showResults()" id="btn-results" class="btn-primary w-full py-4 mt-6" disabled>
+                    <span class="material-symbols-outlined mr-2">analytics</span>Получить результат
+                </button>
+            </div>
+
+            <!-- D3: Results -->
+            <div id="screen-results" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('assessment')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Результаты диагностики</h1><p class="text-sm text-gray-500">Профиль Marketing 5.0</p></div>
+                </div>
+                
+                <div id="results-content" class="space-y-4"></div>
+                
+                <div class="mt-6 space-y-3">
+                    <button onclick="showScreen('customer_journey')" class="btn-primary w-full py-4">
+                        <span class="material-symbols-outlined mr-2">route</span>Карта клиентского пути
+                    </button>
+                    <button onclick="showScreen('tactics')" class="btn-secondary w-full py-4">
+                        <span class="material-symbols-outlined mr-2">tune</span>Тактики 5.0
+                    </button>
+                    <button onclick="showScreen('agile')" class="btn-secondary w-full py-4">
+                        <span class="material-symbols-outlined mr-2">rocket</span>Agile-маркетинг
+                    </button>
+                    <button onclick="resetApp()" class="btn-ghost w-full py-3">
+                        <span class="material-symbols-outlined mr-2">refresh</span>Пройти заново
+                    </button>
+                </div>
+            </div>
+
+            <!-- CJ1: Product Focus -->
+            <div id="screen-cj1" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('results')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Клиентский путь</h1><p class="text-sm text-gray-500">Шаг 1 из 3</p></div>
+                </div>
+                
+                <div class="card p-5 mb-6">
+                    <h2 class="font-display font-semibold text-lg text-gray-800 mb-4">Выберите фокус‑продукты</h2>
+                    <p class="text-sm text-gray-500 mb-4">Какие изделия будем анализировать?</p>
+                    <div class="grid grid-cols-2 gap-3" id="cj-products">
+                        <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50 transition"><input type="checkbox" value="Кухни" class="w-5 h-5 rounded text-indigo-600"><span class="text-sm font-medium">Кухни</span></label>
+                        <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50 transition"><input type="checkbox" value="Шкафы-купе" class="w-5 h-5 rounded text-indigo-600"><span class="text-sm font-medium">Шкафы-купе</span></label>
+                        <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50 transition"><input type="checkbox" value="Детские" class="w-5 h-5 rounded text-indigo-600"><span class="text-sm font-medium">Детские</span></label>
+                        <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50 transition"><input type="checkbox" value="Офисная мебель" class="w-5 h-5 rounded text-indigo-600"><span class="text-sm font-medium">Офисная мебель</span></label>
+                        <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50 transition col-span-2"><input type="checkbox" value="Индивидуальные проекты" class="w-5 h-5 rounded text-indigo-600"><span class="text-sm font-medium">Индивидуальные проекты</span></label>
+                    </div>
+                </div>
+                
+                <button onclick="goToCJ2()" class="btn-primary w-full py-4">
+                    <span class="material-symbols-outlined mr-2">arrow_forward</span>Продолжить
+                </button>
+            </div>
+
+            <!-- CJ2: Journey Map -->
+            <div id="screen-cj2" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('cj1')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Карта пути клиента</h1><p class="text-sm text-gray-500">Шаг 2 из 3</p></div>
+                </div>
+                
+                <div class="space-y-4" id="journey-stages-form">
+                    <div class="card p-5" data-stage="awareness">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-blue-600">visibility</span></div>
+                            <h3 class="font-semibold text-gray-800">Осведомлённость</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div><label class="text-sm text-gray-500 mb-1 block">Каналы привлечения</label><input type="text" id="awareness_channels" class="input-field" placeholder="Kaspi, Instagram, сайт..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Какие данные собираем</label><input type="text" id="awareness_data" class="input-field" placeholder="Источник, UTM..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Проблемы</label><input type="text" id="awareness_problems" class="input-field" placeholder="Нет данных об источниках..."></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-5" data-stage="interest">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-green-600">lightbulb</span></div>
+                            <h3 class="font-semibold text-gray-800">Интерес</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div><label class="text-sm text-gray-500 mb-1 block">Каналы</label><input type="text" id="interest_channels" class="input-field" placeholder="Мессенджеры, звонки..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Данные</label><input type="text" id="interest_data" class="input-field" placeholder="Метраж, этап ремонта..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Проблемы</label><input type="text" id="interest_problems" class="input-field" placeholder="Нет квалификации лидов..."></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-5" data-stage="design">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-purple-600">architecture</span></div>
+                            <h3 class="font-semibold text-gray-800">Проект</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div><label class="text-sm text-gray-500 mb-1 block">Каналы</label><input type="text" id="design_channels" class="input-field" placeholder="Встречи, WhatsApp..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Данные (размеры, стиль, бюджет)</label><input type="text" id="design_data" class="input-field" placeholder="Параметры кухни..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Проблемы</label><input type="text" id="design_problems" class="input-field" placeholder="Долгие согласования..."></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-5" data-stage="order">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-orange-600">receipt_long</span></div>
+                            <h3 class="font-semibold text-gray-800">Заказ</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div><label class="text-sm text-gray-500 mb-1 block">Каналы</label><input type="text" id="order_channels" class="input-field" placeholder="Договор, Kaspi..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Данные (сумма, сроки, материалы)</label><input type="text" id="order_data" class="input-field" placeholder="Стоимость, график..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Проблемы</label><input type="text" id="order_problems" class="input-field" placeholder="Сроки..."></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-5" data-stage="production">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-cyan-600">construction</span></div>
+                            <h3 class="font-semibold text-gray-800">Производство/Монтаж</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div><label class="text-sm text-gray-500 mb-1 block">Данные (загрузка, сроки, бригады)</label><input type="text" id="prod_data" class="input-field" placeholder="Загрузка цеха..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Проблемы</label><input type="text" id="prod_problems" class="input-field" placeholder="Задержки..."></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-5" data-stage="postservice">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-pink-600">favorite</span></div>
+                            <h3 class="font-semibold text-gray-800">Пост-сервис</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div><label class="text-sm text-gray-500 mb-1 block">Данные (отзывы, фото, повторные)</label><input type="text" id="post_data" class="input-field" placeholder="Отзывы, рекомендации..."></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Проблемы</label><input type="text" id="post_problems" class="input-field" placeholder="Нет повторных продаж..."></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="goToCJ3()" class="btn-primary w-full py-4 mt-6">
+                    <span class="material-symbols-outlined mr-2">lightbulb</span>Получить рекомендации
+                </button>
+            </div>
+
+            <!-- CJ3: Tech Recommendations -->
+            <div id="screen-cj3" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('cj2')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Где применить технологии</h1><p class="text-sm text-gray-500">Рекомендации по автоматизации</p></div>
+                </div>
+                
+                <div id="tech-recommendations" class="space-y-4"></div>
+                
+                <div class="mt-6 flex gap-3">
+                    <button onclick="showScreen('cj2')" class="btn-secondary flex-1 py-4">Назад</button>
+                    <button onclick="showScreen('tactics')" class="btn-primary flex-1 py-4">
+                        <span class="material-symbols-outlined mr-2">tune</span>К тактикам
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tactics -->
+            <div id="screen-tactics" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('results')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Тактики 5.0</h1><p class="text-sm text-gray-500">Предиктивный • Контекстный • Дополненный</p></div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="card tactic-card p-5" onclick="showSubmodule('predictive')">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg"><span class="material-symbols-outlined text-white text-2xl">trending_up</span></div>
+                            <div class="flex-1"><h3 class="font-semibold text-gray-800">Предиктивный маркетинг</h3><p class="text-sm text-gray-500">Прогнозирование заказов и спроса</p></div>
+                            <span class="material-symbols-outlined text-gray-400">chevron_right</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card tactic-card p-5" onclick="showSubmodule('contextual')">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg"><span class="material-symbols-outlined text-white text-2xl">context</span></div>
+                            <div class="flex-1"><h3 class="font-semibold text-gray-800">Контекстуальный маркетинг</h3><p class="text-sm text-gray-500">Сегменты и персонализированные офферы</p></div>
+                            <span class="material-symbols-outlined text-gray-400">chevron_right</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card tactic-card p-5" onclick="showSubmodule('augmented')">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg"><span class="material-symbols-outlined text-white text-2xl">smart_toy</span></div>
+                            <div class="flex-1"><h3 class="font-semibold text-gray-800">Дополненный маркетинг</h3><p class="text-sm text-gray-500">Чат-боты и 3D-визуализация</p></div>
+                            <span class="material-symbols-outlined text-gray-400">chevron_right</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="showScreen('results')" class="btn-ghost w-full py-3 mt-4">
+                    <span class="material-symbols-outlined mr-2">arrow_back</span>Назад к результатам
+                </button>
+            </div>
+
+            <!-- Predictive Module -->
+            <div id="screen-predictive" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('tactics')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Предиктивный маркетинг</h1><p class="text-sm text-gray-500">Прогнозирование заказов</p></div>
+                </div>
+                
+                <div class="card p-5 mb-4">
+                    <h3 class="font-semibold text-gray-800 mb-3">Что прогнозируем?</h3>
+                    <select id="predictive-scenario" class="input-field mb-4">
+                        <option value="orders_by_month">Заказы по месяцам</option>
+                        <option value="materials_demand">Потребность в материалах</option>
+                        <option value="repeat_purchase">Вероятность повторной покупки</option>
+                    </select>
+                </div>
+                
+                <div class="card p-5 mb-4">
+                    <h3 class="font-semibold text-gray-800 mb-3">Загрузите данные</h3>
+                    <p class="text-sm text-gray-500 mb-3">Таблица заказов за 6-12 месяцев (CSV, Excel)</p>
+                    <label class="drop-zone block cursor-pointer p-8 text-center border-2 border-dashed border-gray-300 rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition">
+                        <input type="file" id="orders-file" accept=".csv,.xlsx,.xls" class="hidden" onchange="handleFileUpload(this)">
+                        <span class="material-symbols-outlined text-4xl text-gray-400 mb-2 block">upload_file</span>
+                        <p class="font-medium text-gray-600">Нажмите для загрузки файла</p>
+                    </label>
+                    <div id="file-preview" class="mt-4 hidden">
+                        <div class="flex items-center gap-3 p-3 bg-green-50 rounded-xl">
+                            <span class="material-symbols-outlined text-green-600">check_circle</span>
+                            <span id="file-name" class="text-sm font-medium text-gray-700"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-5">
+                    <h3 class="font-semibold text-gray-800 mb-3">Ожидаемые колонки</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="chip chip-primary">order_date</span>
+                        <span class="chip chip-primary">product_type</span>
+                        <span class="chip chip-primary">area_m2</span>
+                        <span class="chip chip-primary">amount</span>
+                        <span class="chip chip-primary">district</span>
+                        <span class="chip chip-primary">acquisition_channel</span>
+                        <span class="chip chip-primary">delivery_deadline</span>
+                        <span class="chip chip-primary">status</span>
+                    </div>
+                </div>
+                
+                <button onclick="runPredictive()" class="btn-primary w-full py-4 mt-6">
+                    <span class="material-symbols-outlined mr-2">analytics</span>Построить прогноз
+                </button>
+            </div>
+
+            <!-- Contextual Module -->
+            <div id="screen-contextual" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('tactics')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Контекстуальный маркетинг</h1><p class="text-sm text-gray-500">Сегменты и офферы</p></div>
+                </div>
+                
+                <div class="card p-5 mb-4">
+                    <h3 class="font-semibold text-gray-800 mb-4">Контекстные сигналы</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-2">Источник</p>
+                            <div class="flex flex-wrap gap-2">
+                                <label class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="source_kaspi" class="signal-checkbox w-4 h-4 rounded"><span class="text-sm">Kaspi</span></label>
+                                <label class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="source_instagram" class="signal-checkbox w-4 h-4 rounded"><span class="text-sm">Instagram</span></label>
+                                <label class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="source_website" class="signal-checkbox w-4 h-4 rounded"><span class="text-sm">Сайт</span></label>
+                                <label class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="source_referral" class="signal-checkbox w-4 h-4 rounded"><span class="text-sm">Рекомендация</span></label>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-2">Тип жилья</p>
+                            <div class="flex flex-wrap gap-2">
+                                <label class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="housing_new_building" class="signal-checkbox w-4 h-4 rounded"><span class="text-sm">Новостройка</span></label>
+                                <label class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="housing_house" class="signal-checkbox w-4 h-4 rounded"><span class="text-sm">Дом</span></label>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-2">Этап ремонта</p>
+                            <div class="flex flex-wrap gap-2">
+                                <label class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="repair_stage_rough" class="signal-checkbox w-4 h-4 rounded"><span class="text-sm">Черновая</span></label>
+                                <label class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="repair_stage_finish" class="signal-checkbox w-4 h-4 rounded"><span class="text-sm">Чистовая</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-5 mb-4">
+                    <h3 class="font-semibold text-gray-800 mb-4">Примеры офферов</h3>
+                    <div class="space-y-3">
+                        <div class="p-4 bg-blue-50 rounded-xl">
+                            <span class="chip chip-primary mb-2">Новостройка + Kaspi</span>
+                            <p class="text-sm text-gray-700">Компактная кухня с максимальным хранением + бесплатный 3D-проект</p>
+                        </div>
+                        <div class="p-4 bg-green-50 rounded-xl">
+                            <span class="chip chip-success mb-2">Дом + Большая площадь</span>
+                            <p class="text-sm text-gray-700">Комплексный проект кухня+гостиная+гардероб со скидкой</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="saveContextual()" class="btn-primary w-full py-4">
+                    <span class="material-symbols-outlined mr-2">save</span>Сохранить офферы
+                </button>
+            </div>
+
+            <!-- Augmented Module -->
+            <div id="screen-augmented" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('tactics')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Дополненный маркетинг</h1><p class="text-sm text-gray-500">Автоматизация и чат-боты</p></div>
+                </div>
+                
+                <div class="card p-5 mb-4">
+                    <h3 class="font-semibold text-gray-800 mb-4">Карта автоматизации</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="incoming_lead" class="automation-checkbox w-5 h-5 rounded"><span class="text-sm font-medium">Входящий лид</span><span class="text-xs text-gray-500 ml-auto">Чат-бот</span></label>
+                        <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="price_guide" class="automation-checkbox w-5 h-5 rounded"><span class="text-sm font-medium">Прайс-руководство</span><span class="text-xs text-gray-500 ml-auto">Автоотправка</span></label>
+                        <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="measurement_booking" class="automation-checkbox w-5 h-5 rounded"><span class="text-sm font-medium">Запись на замер</span><span class="text-xs text-gray-500 ml-auto">Календарь</span></label>
+                        <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="design_approval" class="automation-checkbox w-5 h-5 rounded"><span class="text-sm font-medium">Согласование проекта</span><span class="text-xs text-gray-500 ml-auto">Уведомление</span></label>
+                        <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer hover:bg-indigo-50"><input type="checkbox" value="post_installation" class="automation-checkbox w-5 h-5 rounded"><span class="text-sm font-medium">Пост-монтаж</span><span class="text-xs text-gray-500 ml-auto">Отзывы</span></label>
+                    </div>
+                </div>
+                
+                <div class="card p-5 mb-4">
+                    <h3 class="font-semibold text-gray-800 mb-4">Сценарий чат-бота</h3>
+                    <div id="bot-flow" class="space-y-3">
+                        <div class="bot-node" data-node="welcome">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-blue-500">chat</span>
+                                <span class="text-sm font-medium">Приветствие</span>
+                            </div>
+                            <p class="text-sm text-gray-600">"Здравствуйте! Это студия мебели. Чем можем помочь?"</p>
+                        </div>
+                        <div class="bot-node" data-node="language">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-green-500">translate</span>
+                                <span class="text-sm font-medium">Выбор языка</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="chip chip-primary">Русский</span>
+                                <span class="chip chip-primary">Қазақша</span>
+                            </div>
+                        </div>
+                        <div class="bot-node" data-node="product">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-purple-500">inventory_2</span>
+                                <span class="text-sm font-medium">Выбор продукта</span>
+                            </div>
+                            <div class="flex gap-2 flex-wrap">
+                                <span class="chip chip-primary">Кухня</span>
+                                <span class="chip chip-primary">Шкаф-купе</span>
+                                <span class="chip chip-primary">Другое</span>
+                            </div>
+                        </div>
+                        <div class="bot-node" data-node="params">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-orange-500">edit_note</span>
+                                <span class="text-sm font-medium">Сбор параметров</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Размеры, этап ремонта, бюджет</p>
+                        </div>
+                        <div class="bot-node" data-node="handoff">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-pink-500">how_to_reg</span>
+                                <span class="text-sm font-medium">Передача менеджеру</span>
+                            </div>
+                            <p class="text-sm text-gray-600">"Спасибо! Менеджер свяжется с вами."</p>
+                        </div>
+                    </div>
+                    <button onclick="exportBotFlow()" class="btn-secondary w-full py-3 mt-4">
+                        <span class="material-symbols-outlined mr-2">download</span>Экспорт JSON
+                    </button>
+                </div>
+                
+                <button onclick="saveAugmented()" class="btn-primary w-full py-4">
+                    <span class="material-symbols-outlined mr-2">save</span>Сохранить настройки
+                </button>
+            </div>
+
+            <!-- Agile Module -->
+            <div id="screen-agile" class="screen">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="showScreen('results')" class="p-2 -ml-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">arrow_back</span></button>
+                    <div><h1 class="font-display text-xl font-bold text-gray-800">Agile-маркетинг</h1><p class="text-sm text-gray-500">Спринты и дорожная карта</p></div>
+                </div>
+                
+                <div class="flex gap-2 mb-4">
+                    <button onclick="showAgileTab('templates')" class="tab-btn active" id="tab-templates">Шаблоны</button>
+                    <button onclick="showAgileTab('sprints')" class="tab-btn" id="tab-sprints">Спринты</button>
+                    <button onclick="showAgileTab('roadmap')" class="tab-btn" id="tab-roadmap">Roadmap</button>
+                </div>
+                
+                <div id="agile-templates" class="space-y-4">
+                    <div class="sprint-card card p-5 bg-gradient-to-r from-blue-50 to-indigo-50">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-white">smart_toy</span></div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800">Запуск чат-бота</h3>
+                                <p class="text-sm text-gray-600 mt-1">Сократить время ответа и снять нагрузку с менеджера</p>
+                                <div class="flex gap-2 mt-2">
+                                    <span class="chip chip-primary">avg_response_time</span>
+                                    <span class="chip chip-primary">leads_processed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sprint-card card p-5 bg-gradient-to-r from-orange-50 to-yellow-50">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-white">local_offer</span></div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800">Тест контекстного оффера</h3>
+                                <p class="text-sm text-gray-600 mt-1">Увеличить конверсию лидов из новостроек</p>
+                                <div class="flex gap-2 mt-2">
+                                    <span class="chip chip-primary">conversion_rate</span>
+                                    <span class="chip chip-primary">avg_check</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sprint-card card p-5 bg-gradient-to-r from-purple-50 to-pink-50">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-white">trending_up</span></div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800">Пилот прогноза заказов</h3>
+                                <p class="text-sm text-gray-600 mt-1">Снизить риски недозагрузки/перегрузки</p>
+                                <div class="flex gap-2 mt-2">
+                                    <span class="chip chip-primary">forecast_accuracy</span>
+                                    <span class="chip chip-primary">stockouts</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="agile-sprints" class="space-y-4 hidden">
+                    <div class="card p-5">
+                        <h3 class="font-semibold text-gray-800 mb-4">Создать новый спринт</h3>
+                        <div class="space-y-3">
+                            <div><label class="text-sm text-gray-500 mb-1 block">Название</label><input type="text" id="sprint-name" class="input-field" placeholder="Запуск чат-бота для кухонь"></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="text-sm text-gray-500 mb-1 block">Длительность</label><input type="number" id="sprint-duration" class="input-field" value="2" min="1" max="4"></div>
+                            </div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Цель</label><textarea id="sprint-goal" class="input-field" rows="2" placeholder="Что хотим достичь?"></textarea></div>
+                            <div><label class="text-sm text-gray-500 mb-1 block">Гипотеза</label><textarea id="sprint-hypothesis" class="input-field" rows="2" placeholder="Мы верим, что..."></textarea></div>
+                        </div>
+                        <button onclick="createSprint()" class="btn-primary w-full py-3 mt-4">
+                            <span class="material-symbols-outlined mr-2">add</span>Создать спринт
+                        </button>
+                    </div>
+                    
+                    <div id="sprints-list" class="space-y-3"></div>
+                </div>
+                
+                <div id="agile-roadmap" class="space-y-4 hidden">
+                    <div class="card p-5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+                        <h3 class="font-semibold mb-4 flex items-center gap-2"><span class="material-symbols-outlined">map</span>Дорожная карта внедрения 5.0</h3>
+                        <div class="space-y-4">
+                            <div class="bg-white/10 rounded-xl p-4">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center font-bold">1</div>
+                                    <span class="font-semibold">Этап 1 (1–2 месяц)</span>
+                                </div>
+                                <ul class="text-sm text-white/80 space-y-1 ml-11">
+                                    <li>• Сбор и структурирование данных</li>
+                                    <li>• Карта клиентского пути</li>
+                                    <li>• Первый пилот (чат-бот или визуализация)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white/10 rounded-xl p-4">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center font-bold">2</div>
+                                    <span class="font-semibold">Этап 2 (3–4 месяц)</span>
+                                </div>
+                                <ul class="text-sm text-white/80 space-y-1 ml-11">
+                                    <li>• Первый предиктивный прогноз заказов</li>
+                                    <li>• Запуск контекстных офферов для ключевых сегментов</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white/10 rounded-xl p-4">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center font-bold">3</div>
+                                    <span class="font-semibold">Этап 3 (5–6 месяц)</span>
+                                </div>
+                                <ul class="text-sm text-white/80 space-y-1 ml-11">
+                                    <li>• Масштабирование работающих инструментов</li>
+                                    <li>• Корректировка стратегии на основе данных</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="exportRoadmap()" class="btn-secondary w-full py-3">
+                        <span class="material-symbols-outlined mr-2">download</span>Экспорт roadmap
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-100 px-6 py-3 z-50">
+            <div class="max-w-2xl mx-auto flex justify-around">
+                <button onclick="showScreen('onboarding')" class="nav-btn flex flex-col items-center gap-1 text-primary" data-screen="onboarding"><span class="material-symbols-outlined">home</span><span class="text-xs font-medium">Главная</span></button>
+                <button onclick="showScreen('assessment')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-screen="assessment"><span class="material-symbols-outlined">analytics</span><span class="text-xs font-medium">Диагностика</span></button>
+                <button onclick="showScreen('cj1')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-screen="cj1"><span class="material-symbols-outlined">route</span><span class="text-xs font-medium">Путь</span></button>
+                <button onclick="showScreen('agile')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-screen="agile"><span class="material-symbols-outlined">rocket</span><span class="text-xs font-medium">Agile</span></button>
+            </div>
+        </nav>
+        
+        <div id="toast" class="toast"></div>
+        
+        <div id="modal-menu" class="modal-overlay">
+            <div class="modal-content p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="font-display text-lg font-bold text-gray-800">Меню</h2>
+                    <button onclick="closeMenu()" class="p-2 -mr-2 rounded-full hover:bg-gray-100"><span class="material-symbols-outlined text-gray-600">close</span></button>
+                </div>
+                <div class="space-y-2">
+                    <button onclick="exportAllData()" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition"><span class="material-symbols-outlined text-indigo-600">download</span><span class="font-medium">Экспорт всех данных</span></button>
+                    <button onclick="resetApp()" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition text-red-500"><span class="material-symbols-outlined">delete_forever</span><span class="font-medium">Очистить все данные</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let scores = {}, radarChartInstance = null;
+        let journeyData = {}, selectedProducts = [];
+        let sprints = [];
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById(`screen-${screenId}`).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-primary');
+                btn.classList.add('text-gray-400');
+            });
+            const activeNav = document.querySelector(`.nav-btn[data-screen="${screenId}"]`);
+            if (activeNav) { activeNav.classList.remove('text-gray-400'); activeNav.classList.add('text-primary'); }
+        }
+
+        function selectScale(el, field, value) {
+            el.parentElement.querySelectorAll('.scale-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            scores[field] = value;
+            updateProgress();
+            if (Object.keys(scores).length === 5) document.getElementById('btn-results').disabled = false;
+        }
+
+        function updateProgress() {
+            document.getElementById('assessment-progress').style.width = `${(Object.keys(scores).length / 5) * 100}%`;
+        }
+
+        function showResults() {
+            if (Object.keys(scores).length < 5) { showToast('Ответьте на все вопросы'); return; }
+            const data = {
+                data_driven: scores.data_driven_score || 0,
+                agile: scores.agile_score || 0,
+                predictive: scores.predictive_score || 0,
+                context: scores.context_score || 0,
+                augmented: scores.augmented_score || 0
+            };
+            const resultsDiv = document.getElementById('results-content');
+            resultsDiv.innerHTML = '';
+
+            const profileCard = document.createElement('div');
+            profileCard.className = 'card p-5';
+            profileCard.innerHTML = `<h2 class="font-display font-bold text-lg text-gray-800 mb-4">Ваш профиль</h2><div class="h-64"><canvas id="radarChart"></canvas></div>`;
+            resultsDiv.appendChild(profileCard);
+            setTimeout(() => {
+                if (radarChartInstance) radarChartInstance.destroy();
+                radarChartInstance = new Chart(document.getElementById('radarChart').getContext('2d'), {
+                    type: 'radar',
+                    data: { labels: ['Данные', 'Agile', 'Предиктив', 'Контекст', 'Дополненный'], datasets: [{ label: 'Оценка', data: [data.data_driven, data.agile, data.predictive, data.context, data.augmented], fill: true, backgroundColor: 'rgba(79,70,229,0.2)', borderColor: 'rgb(79,70,229)', pointBackgroundColor: 'rgb(79,70,229)' }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 5, ticks: { stepSize: 1, display: false }, pointLabels: { font: { size: 11, weight: '500' } } } }, plugins: { legend: { display: false } } }
+                });
+            }, 50);
+
+            const labelMap = { data_driven: 'На данных', agile: 'Agile', predictive: 'Предиктивный', context: 'Контекстуальный', augmented: 'Дополненный' };
+            const strongAreas = Object.entries(data).filter(([k,v]) => v >= 4).map(([k]) => labelMap[k]);
+            const weakAreas = Object.entries(data).filter(([k,v]) => v <= 2).map(([k]) => labelMap[k]);
+
+            const summaryCard = document.createElement('div');
+            summaryCard.className = 'card p-5';
+            summaryCard.innerHTML = `<h2 class="font-semibold text-gray-800 mb-3">Сильные стороны</h2><div class="flex flex-wrap gap-2 mb-4">${strongAreas.length ? strongAreas.map(a => `<span class="chip chip-success">${a}</span>`).join('') : '<span class="text-gray-500">Не выявлены</span>'}</div><h2 class="font-semibold text-gray-800 mb-3">Зоны роста</h2><div class="flex flex-wrap gap-2">${weakAreas.length ? weakAreas.map(a => `<span class="chip chip-warning">${a}</span>`).join('') : '<span class="text-gray-500">Нет</span>'}</div>`;
+            resultsDiv.appendChild(summaryCard);
+
+            const recommendations = [];
+            if (data.data_driven <= 2) recommendations.push({ text: 'Начните с настройки сбора и анализа данных', priority: 'high' });
+            if (data.augmented <= 2) recommendations.push({ text: 'Запустите простого чат-бота и 3D-визуализацию', priority: 'high' });
+            if (data.context <= 2) recommendations.push({ text: 'Сегментируйте клиентов по типу жилья и каналу', priority: 'medium' });
+            if (data.predictive <= 2) recommendations.push({ text: 'Начните с простого прогноза заказов', priority: 'medium' });
+            if (data.agile <= 2) recommendations.push({ text: 'Работайте короткими спринтами', priority: 'medium' });
+            if (!recommendations.length) recommendations.push({ text: 'Отличные показатели! Масштабируйте практики', priority: 'low' });
+
+            const recCard = document.createElement('div');
+            recCard.className = 'card p-5';
+            recCard.innerHTML = `<h2 class="font-semibold text-gray-800 mb-3">Рекомендации</h2><div class="space-y-3">${recommendations.map(r => `<div class="flex gap-3 p-3 bg-gray-50 rounded-xl"><span class="material-symbols-outlined ${r.priority === 'high' ? 'text-red-500' : r.priority === 'medium' ? 'text-yellow-500' : 'text-green-500'}">${r.priority === 'high' ? 'priority_high' : r.priority === 'medium' ? 'remove_circle_outline' : 'check_circle'}</span><p class="text-sm text-gray-700">${r.text}</p></div>`).join('')}</div>`;
+            resultsDiv.appendChild(recCard);
+
+            localStorage.setItem('m5_diagnostics', JSON.stringify(data));
+            showScreen('results');
+        }
+
+        function goToCJ2() {
+            const checkboxes = document.querySelectorAll('#cj-products input:checked');
+            selectedProducts = Array.from(checkboxes).map(cb => cb.value);
+            if (!selectedProducts.length) { showToast('Выберите продукт'); return; }
+            showScreen('cj2');
+        }
+
+        function goToCJ3() {
+            const stages = ['awareness', 'interest', 'design', 'order', 'production', 'postservice'];
+            stages.forEach(stage => {
+                journeyData[stage] = {
+                    channels: document.getElementById(`${stage}_channels`)?.value || '',
+                    data: document.getElementById(`${stage}_data`)?.value || '',
+                    problems: document.getElementById(`${stage}_problems`)?.value || ''
+                };
+            });
+            localStorage.setItem('m5_journey', JSON.stringify({ products: selectedProducts, stages: journeyData }));
+
+            const recs = [
+                { stage: 'Осведомлённость', icon: 'visibility', suggestions: ['A/B-тесты креативов и каналов', 'Учёт источников (Kaspi, Instagram, сайт)'] },
+                { stage: 'Интерес', icon: 'lightbulb', suggestions: ['Чат-бот для сбора метража и бюджета', 'Автоматизация отправки прайса'] },
+                { stage: 'Проект', icon: 'architecture', suggestions: ['3D-визуализация с комментариями', 'Фиксация согласованных решений'] },
+                { stage: 'Заказ', icon: 'receipt_long', suggestions: ['Привязка к календарю производства', 'Сбор данных о сроках'] },
+                { stage: 'Производство', icon: 'construction', suggestions: ['Прогноз загрузки для закупок', 'Фиксация причин задержек'] },
+                { stage: 'Пост-сервис', icon: 'favorite', suggestions: ['Автозапрос отзывов через WhatsApp', 'Персональные офферы на повторные заказы'] }
+            ];
+
+            const recDiv = document.getElementById('tech-recommendations');
+            recDiv.innerHTML = recs.map(r => `
+                <div class="card p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center"><span class="material-symbols-outlined text-indigo-600">${r.icon}</span></div>
+                        <h3 class="font-semibold text-gray-800">${r.stage}</h3>
+                    </div>
+                    <ul class="space-y-2">${r.suggestions.map(s => `<li class="flex items-start gap-2 text-sm text-gray-600"><span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>${s}</li>`).join('')}</ul>
+                </div>
+            `).join('');
+            showScreen('cj3');
+        }
+
+        function showSubmodule(module) {
+            const screenMap = { predictive: 'predictive', contextual: 'contextual', augmented: 'augmented' };
+            showScreen(screenMap[module]);
+        }
+
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById('file-name').textContent = file.name;
+                document.getElementById('file-preview').classList.remove('hidden');
+                showToast('Файл загружен: ' + file.name);
+            }
+        }
+
+        function runPredictive() { showToast('Демо: Прогноз готов!'); }
+
+        function saveContextual() {
+            const signals = Array.from(document.querySelectorAll('.signal-checkbox:checked')).map(cb => cb.value);
+            localStorage.setItem('m5_signals', JSON.stringify(signals));
+            showToast('Сигналы сохранены!');
+        }
+
+        function saveAugmented() {
+            const automations = Array.from(document.querySelectorAll('.automation-checkbox:checked')).map(cb => cb.value);
+            localStorage.setItem('m5_automations', JSON.stringify(automations));
+            showToast('Настройки сохранены!');
+        }
+
+        function exportBotFlow() {
+            const flow = { start: 'welcome', nodes: ['welcome', 'language', 'product', 'params', 'handoff', 'end'] };
+            const blob = new Blob([JSON.stringify(flow, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'bot_flow.json'; a.click();
+            showToast('JSON экспортирован!');
+        }
+
+        function showAgileTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            document.getElementById('agile-templates').classList.toggle('hidden', tab !== 'templates');
+            document.getElementById('agile-sprints').classList.toggle('hidden', tab !== 'sprints');
+            document.getElementById('agile-roadmap').classList.toggle('hidden', tab !== 'roadmap');
+        }
+
+        function createSprint() {
+            const name = document.getElementById('sprint-name').value;
+            const duration = document.getElementById('sprint-duration').value;
+            const goal = document.getElementById('sprint-goal').value;
+            if (!name) { showToast('Введите название'); return; }
+            const sprint = { id: Date.now(), name, duration, goal, hypothesis: document.getElementById('sprint-hypothesis').value, status: 'active' };
+            sprints.push(sprint);
+            renderSprints();
+            ['sprint-name', 'sprint-duration', 'sprint-goal', 'sprint-hypothesis'].forEach(id => document.getElementById(id).value = '');
+            localStorage.setItem('m5_sprints', JSON.stringify(sprints));
+            showToast('Спринт создан!');
+        }
+
+        function renderSprints() {
+            const list = document.getElementById('sprints-list');
+            list.innerHTML = sprints.map(s => `
+                <div class="sprint-card card p-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-semibold text-gray-800">${s.name}</h4>
+                        <span class="chip chip-success">${s.duration} нед.</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">${s.goal}</p>
+                </div>
+            `).join('') || '<p class="text-gray-500 text-center py-4">Нет активных спринтов</p>';
+        }
+
+        function exportRoadmap() {
+            const roadmap = { phases: [{ name: 'Этап 1', months: '1-2', focus: ['Сбор данных', 'Карта пути', 'Пилот чат-бота'] }, { name: 'Этап 2', months: '3-4', focus: ['Предиктив', 'Контекстные офферы'] }, { name: 'Этап 3', months: '5-6', focus: ['Масштабирование', 'Корректировка'] }] };
+            const blob = new Blob([JSON.stringify(roadmap, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'roadmap.json'; a.click();
+            showToast('Roadmap экспортирован!');
+        }
+
+        function exportAllData() {
+            const data = { diagnostics: JSON.parse(localStorage.getItem('m5_diagnostics') || '{}'), journey: JSON.parse(localStorage.getItem('m5_journey') || '{}'), signals: JSON.parse(localStorage.getItem('m5_signals') || '[]'), automations: JSON.parse(localStorage.getItem('m5_automations') || '[]'), sprints: JSON.parse(localStorage.getItem('m5_sprints') || '[]'), exportDate: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'marketing5_full_export.json'; a.click();
+            closeMenu();
+            showToast('Данные экспортированы!');
+        }
+
+        function resetApp() {
+            if (confirm('Удалить все данные?')) {
+                ['m5_diagnostics', 'm5_journey', 'm5_signals', 'm5_automations', 'm5_sprints'].forEach(k => localStorage.removeItem(k));
+                scores = {}; sprints = []; selectedProducts = []; journeyData = {};
+                document.querySelectorAll('.scale-option').forEach(opt => opt.classList.remove('selected'));
+                document.getElementById('assessment-progress').style.width = '0%';
+                document.getElementById('btn-results').disabled = true;
+                closeMenu();
+                showScreen('onboarding');
+                showToast('Данные очищены');
+            }
+        }
+
+        function toggleMenu() { document.getElementById('modal-menu').classList.add('active'); }
+        function closeMenu() { document.getElementById('modal-menu').classList.remove('active'); }
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        document.getElementById('modal-menu').addEventListener('click', function(e) { if (e.target === this) closeMenu(); });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedDiag = localStorage.getItem('m5_diagnostics');
+            if (savedDiag) { scores = JSON.parse(savedDiag); Object.entries(scores).forEach(([field, val]) => { const opt = document.querySelector(`[onclick*="${field}",${val}]`); if (opt) opt.classList.add('selected'); }); updateProgress(); if (Object.keys(scores).length === 5) document.getElementById('btn-results').disabled = false; }
+            const savedSprints = localStorage.getItem('m5_sprints');
+            if (savedSprints) { sprints = JSON.parse(savedSprints); renderSprints(); }
+            showScreen('onboarding');
+        });
+    </script>
+</body>
+</html>
